@@ -12,7 +12,7 @@ class Server {
         this.app = express();
         this.connectDB();
         this.config();
-        // this.routes();
+        this.routes();
         this.middlewares();
     }
 
@@ -30,12 +30,24 @@ class Server {
         this.app.use(express.json());
     }
 
-    /*routes() {
-        this.app.use('/api', require('./routes/index'));
-    }*/
+    routes() {
+        // auths
+        // clients
+        // products
+        // orders
+        // payments
+        // inventories
+        // movements
+        // categories
+        // directions
+        // workers
+        // departments
+        // offices
+
+    }
 
     start() {
-        this.app.listen(this.app.get('port'), () => {
+        this.app.listen(this.app.get('port'), '0.0.0.0', () => {
             console.log('Server on port', this.app.get('port'));
         });
     }
