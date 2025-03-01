@@ -83,7 +83,7 @@ CREATE TABLE products_orders (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE payments_ordenes (
+CREATE TABLE payments_orders (
     id NUMBER PRIMARY KEY,
     order_id NUMBER REFERENCES orders(id),
     payment_method VARCHAR2(100),
@@ -163,3 +163,39 @@ CREATE TABLE products_devolution (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+SELECT * FROM categories;
+SELECT * FROM clients;
+SELECT * FROM payments;
+SELECT * FROM directions;
+SELECT * FROM workers;
+SELECT * FROM departments;
+SELECT * FROM offices;
+SELECT * FROM orders;
+SELECT * FROM products_orders;
+SELECT * FROM payments_orders;
+SELECT * FROM inventory;
+SELECT * FROM products_movements;
+SELECT * FROM products;
+SELECT * FROM images;
+SELECT * FROM movements;
+SELECT * FROM delivered_orders;
+SELECT * FROM products_devolution;
+
+DROP TABLE categories;
+DROP TABLE clients;
+DROP TABLE payments;
+DROP TABLE directions;
+DROP TABLE workers;
+DROP TABLE departments;
+DROP TABLE offices;
+DROP TABLE orders;
+DROP TABLE products_orders;
+DROP TABLE payments_orders;
+DROP TABLE inventory;
+DROP TABLE products_movements;
+DROP TABLE products;
+DROP TABLE images;
+DROP TABLE movements;
+DROP TABLE delivered_orders;
+DROP TABLE products_devolution;
