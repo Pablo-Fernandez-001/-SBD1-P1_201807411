@@ -1,3 +1,21 @@
+DROP TABLE categories CASCADE CONSTRAINTS;
+DROP TABLE clients CASCADE CONSTRAINTS;
+DROP TABLE payments CASCADE CONSTRAINTS;
+DROP TABLE directions CASCADE CONSTRAINTS;
+DROP TABLE workers CASCADE CONSTRAINTS;
+DROP TABLE departments CASCADE CONSTRAINTS;
+DROP TABLE offices CASCADE CONSTRAINTS;
+DROP TABLE orders CASCADE CONSTRAINTS;
+DROP TABLE products_orders CASCADE CONSTRAINTS;
+DROP TABLE payments_orders CASCADE CONSTRAINTS;
+DROP TABLE inventory CASCADE CONSTRAINTS;
+DROP TABLE products_movements CASCADE CONSTRAINTS;
+DROP TABLE products CASCADE CONSTRAINTS;
+DROP TABLE images CASCADE CONSTRAINTS;
+DROP TABLE movements CASCADE CONSTRAINTS;
+DROP TABLE delivered_orders CASCADE CONSTRAINTS;
+DROP TABLE products_devolution CASCADE CONSTRAINTS;
+
 CREATE TABLE categories (
     id NUMBER PRIMARY KEY,
     name VARCHAR2(255) NOT NULL,
@@ -5,6 +23,26 @@ CREATE TABLE categories (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE departments (
+    id NUMBER PRIMARY KEY,
+    national_document VARCHAR2(50) UNIQUE NOT NULL,
+    name VARCHAR2(255) NOT NULL,
+    lastname VARCHAR2(255) NOT NULL,
+    phone VARCHAR2(20),
+    email VARCHAR2(255) UNIQUE,
+    active NUMBER(1) DEFAULT 1,
+    confirmed_email NUMBER(1) DEFAULT 1,
+    password VARCHAR2(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE offices (
+    id NUMBER PRIMARY KEY,
+    name VARCHAR2(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE clients (
     id NUMBER PRIMARY KEY,
@@ -13,25 +51,9 @@ CREATE TABLE clients (
     lastname VARCHAR2(255) NOT NULL,
     phone VARCHAR2(20),
     email VARCHAR2(255) UNIQUE,
-    active BOOLEAN DEFAULT TRUE,
-    confirmed_email BOOLEAN DEFAULT FALSE,
+    active NUMBER(1) DEFAULT 1,
+    confirmed_email NUMBER(1) DEFAULT 1,
     password VARCHAR2(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE payments (
-    id NUMBER PRIMARY KEY,
-    client_id NUMBER REFERENCES clients(id),
-    payment_method VARCHAR2(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE directions (
-    id NUMBER PRIMARY KEY,
-    client_id NUMBER REFERENCES clients(id),
-    address VARCHAR2(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -46,21 +68,37 @@ CREATE TABLE workers (
     phone VARCHAR2(20),
     email VARCHAR2(255) UNIQUE,
     location_id NUMBER REFERENCES offices(id),
-    active BOOLEAN DEFAULT TRUE,
+    active NUMBER(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE departments (
+CREATE TABLE products (
     id NUMBER PRIMARY KEY,
+    sku VARCHAR2(100) UNIQUE NOT NULL,
     name VARCHAR2(255) NOT NULL,
+    description CLOB,
+    price NUMBER(10,2) NOT NULL,
+    slug VARCHAR2(255) UNIQUE NOT NULL,
+    category_id NUMBER REFERENCES categories(id),
+    active NUMBER(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE offices (
+-- Crear las tablas dependientes después
+CREATE TABLE payments (
     id NUMBER PRIMARY KEY,
-    name VARCHAR2(255) NOT NULL,
+    client_id NUMBER REFERENCES clients(id),
+    payment_method VARCHAR2(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE directions (
+    id NUMBER PRIMARY KEY,
+    client_id NUMBER REFERENCES clients(id),
+    address VARCHAR2(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -101,6 +139,17 @@ CREATE TABLE inventory (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE movements (
+    id NUMBER PRIMARY KEY,
+    location_origin_id NUMBER REFERENCES offices(id),
+    location_dest_id NUMBER REFERENCES offices(id),
+    status VARCHAR2(50),
+    estimate_arrive_date DATE,
+    requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE products_movements (
     id NUMBER PRIMARY KEY,
     movement_id NUMBER REFERENCES movements(id),
@@ -110,34 +159,10 @@ CREATE TABLE products_movements (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE products (
-    id NUMBER PRIMARY KEY,
-    sku VARCHAR2(100) UNIQUE NOT NULL,
-    name VARCHAR2(255) NOT NULL,
-    description CLOB,
-    price NUMBER(10,2) NOT NULL,
-    slug VARCHAR2(255) UNIQUE NOT NULL,
-    category_id NUMBER REFERENCES categories(id),
-    active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE images (
     id NUMBER PRIMARY KEY,
     product_id NUMBER REFERENCES products(id),
     image VARCHAR2(500),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE movements (
-    id NUMBER PRIMARY KEY,
-    location_origin_id NUMBER REFERENCES offices(id),
-    location_dest_id NUMBER REFERENCES offices(id),
-    status VARCHAR2(50),
-    estimate_arrive_date DATE,
-    requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -164,38 +189,20 @@ CREATE TABLE products_devolution (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-SELECT * FROM categories;
-SELECT * FROM clients;
-SELECT * FROM payments;
-SELECT * FROM directions;
-SELECT * FROM workers;
-SELECT * FROM departments;
-SELECT * FROM offices;
-SELECT * FROM orders;
-SELECT * FROM products_orders;
-SELECT * FROM payments_orders;
-SELECT * FROM inventory;
-SELECT * FROM products_movements;
-SELECT * FROM products;
-SELECT * FROM images;
-SELECT * FROM movements;
-SELECT * FROM delivered_orders;
-SELECT * FROM products_devolution;
-
-DROP TABLE categories;
-DROP TABLE clients;
-DROP TABLE payments;
-DROP TABLE directions;
-DROP TABLE workers;
-DROP TABLE departments;
-DROP TABLE offices;
-DROP TABLE orders;
-DROP TABLE products_orders;
-DROP TABLE payments_orders;
-DROP TABLE inventory;
-DROP TABLE products_movements;
-DROP TABLE products;
-DROP TABLE images;
-DROP TABLE movements;
-DROP TABLE delivered_orders;
-DROP TABLE products_devolution;
+SELECT COUNT(*) FROM categories;
+SELECT COUNT(*) FROM clients;
+SELECT COUNT(*) FROM payments;
+SELECT COUNT(*) FROM directions;
+SELECT COUNT(*) FROM workers;
+SELECT COUNT(*) FROM departments;
+SELECT COUNT(*) FROM offices;
+SELECT COUNT(*) FROM orders;
+SELECT COUNT(*) FROM products_orders;
+SELECT COUNT(*) FROM payments_orders;
+SELECT COUNT(*) FROM inventory;
+SELECT COUNT(*) FROM products_movements;
+SELECT COUNT(*) FROM products;
+SELECT COUNT(*) FROM images;
+SELECT COUNT(*) FROM movements;
+SELECT COUNT(*) FROM delivered_orders;
+SELECT COUNT(*) FROM products_devolution;

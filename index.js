@@ -5,6 +5,7 @@ require('dotenv').config();
 
 // Routes
 const { getConnection } = require('./db/dbConnection');
+const usersRoutes = require('./routes/usersRoutes');
 
 // Server
 class Server {
@@ -31,18 +32,13 @@ class Server {
     }
 
     routes() {
-        // auths
-        // clients
-        // products
-        // orders
-        // payments
-        // inventories
-        // movements
-        // categories
-        // directions
-        // workers
-        // departments
-        // offices
+        // Auths
+        // users
+        this.app.use('/api/users', usersRoutes);
+        // proyects
+        // tasks
+        // notes
+        // bulkloads
 
     }
 
