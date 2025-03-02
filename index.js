@@ -13,8 +13,8 @@ class Server {
         this.app = express();
         this.connectDB();
         this.config();
-        this.routes();
         this.middlewares();
+        this.routes();
     }
 
     config() {
@@ -26,9 +26,9 @@ class Server {
     }
 
     middlewares() {
-        this.app.use(morgan('dev'));
-        this.app.use(cors());
         this.app.use(express.json());
+        this.app.use(morgan('combined'));
+        this.app.use(cors());
     }
 
     routes() {

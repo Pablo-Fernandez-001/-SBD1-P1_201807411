@@ -189,20 +189,20 @@ CREATE TABLE products_devolution (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-SELECT COUNT(*) FROM categories;
+SELECT * FROM categories;
 SELECT * FROM clients;
-SELECT COUNT(*) FROM payments;
-SELECT COUNT(*) FROM directions;
-SELECT COUNT(*) FROM workers;
-SELECT COUNT(*) FROM departments;
-SELECT COUNT(*) FROM offices;
-SELECT COUNT(*) FROM orders;
-SELECT COUNT(*) FROM products_orders;
-SELECT COUNT(*) FROM payments_orders;
-SELECT COUNT(*) FROM inventory;
-SELECT COUNT(*) FROM products_movements;
-SELECT COUNT(*) FROM products;
-SELECT COUNT(*) FROM images;
-SELECT COUNT(*) FROM movements;
-SELECT COUNT(*) FROM delivered_orders;
-SELECT COUNT(*) FROM products_devolution;
+SELECT * FROM payments;
+SELECT * FROM directions;
+SELECT * FROM workers;
+SELECT * FROM departments;
+SELECT * FROM offices;
+SELECT * FROM orders;
+SELECT * FROM products_orders;
+SELECT * FROM payments_orders;
+SELECT * FROM inventory;
+SELECT * FROM products_movements;
+SELECT * FROM products;
+SELECT * FROM images;
+SELECT * FROM movements;
+SELECT * FROM delivered_orders;
+SELECT * FROM products_devolution;

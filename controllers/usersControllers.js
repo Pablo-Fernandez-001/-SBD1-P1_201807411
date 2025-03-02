@@ -34,31 +34,42 @@ class usersController {
 
   // insertar un usuario
   static async store(req, res) {
-    const { id, national_document, name, lastname, phone, email, active, confirmed_email, password, role } = req.body;
     const connection = await getConnection();
     try {
+      const { id, national_document, name, lastname, phone, email, active, confirmed_email, password } = req.body;
+      console.log(req.body);
+      if(!req.body){
+        return res.status(400).json({ error: "Faltan datos" });
+        
+      }
       await connection.execute(
-        `INSERT INTO clients (id, national_document, name, lastname, phone, email, active, confirmed_email, password, role) 
-        VALUES (:national_document, :name, :lastname, :phone, :email, :active, :confirmed_email, :password, :role)`,
-        [id, national_document, name, lastname, phone, email, active, confirmed_email, password, role]
+        `INSERT INTO clients (id, national_document, name, lastname, phone, email, active, confirmed_email, password) 
+         VALUES (:id, :national_document, :name, :lastname, :phone, :email, :active, :confirmed_email, :password)`,
+        [id, national_document, name, lastname, phone, email, active, confirmed_email, password],
+        { autoCommit: true } // Asegúrate de que esto esté aquí
       );
-      res.json({ message: "Usuario insertado correctamente" });
+      res.json({ message: "Usuario insertado correctamente", user:  {id, national_document, name, lastname, phone, email, active, confirmed_email, password} });
     } catch (error) {
-      res.status(500).json({ error: "Error al insertar el usuario" });
-    } finally {
-      await connection.close();
+        console.error("Error en la inserción:", error);
+        res.status(500).json({ error: "Error al insertar el usuario" });
     }
-  }
+     finally {
+        await connection.close();
+    }
+}
 
   // Actualizar un usuario
   static async update(req, res) {
     const { id } = req.params;
-    const { national_document, name, lastname, phone, email, active, confirmed_email, password, role } = req.body;
+    const { national_document, name, lastname, phone, email, active, confirmed_email, password } = req.body;
     const connection = await getConnection();
     try {
       await connection.execute(
-        `UPDATE clients SET national_document = :national_document, name = :name, lastname = :lastname, phone = :phone, email = :email, active = :active, confirmed_email = :confirmed_email, password = :password, role = :role WHERE id = :id`,
-        [national_document, name, lastname, phone, email, active, confirmed_email, password, role, id]
+        `UPDATE clients
+        SET national_document = :national_document, name = :name, lastname = :lastname, phone = :phone, email = :email, active = :active, confirmed_email = :confirmed_email, password = :password
+        WHERE id = :id`,
+        [national_document, name, lastname, phone, email, active, confirmed_email, password, id],
+        { autoCommit: true } // Asegúrate de que esto esté aquí
       );
       res.json({ message: "Usuario actualizado correctamente" });
     } catch (error) {
@@ -73,7 +84,10 @@ class usersController {
         const { id } = req.params;
         const connection = await getConnection();
         try {
-        await connection.execute('DELETE FROM clients WHERE id = :id', [id]);
+        await connection.execute(`DELETE FROM clients 
+          WHERE id = :id`, [id],
+          { autoCommit: true } // Asegúrate de que esto esté aquí
+          );
         res.json({ message: "Usuario eliminado correctamente" });
         } catch (error) {
         res.status(500).json({ error: "Error al eliminar el usuario" });
