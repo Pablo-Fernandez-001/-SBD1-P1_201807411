@@ -190,7 +190,7 @@ CREATE TABLE products_devolution (
 );
 
 SELECT COUNT(*) FROM categories;
-SELECT COUNT(*) FROM clients;
+SELECT * FROM clients;
 SELECT COUNT(*) FROM payments;
 SELECT COUNT(*) FROM directions;
 SELECT COUNT(*) FROM workers;

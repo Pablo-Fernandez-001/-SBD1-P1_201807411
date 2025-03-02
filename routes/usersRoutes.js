@@ -9,11 +9,12 @@ class UsersRoutes {
     }
 
     routes() {
-        this.router.get('/', usersController.index);
-        this.router.get('/:id', usersController.show);
+        this.router.get('/', usersController.getAll);
+        this.router.get('/:id', usersController.getOne);
         this.router.post('/', usersController.store);
         this.router.put('/:id', usersController.update);
         this.router.delete('/:id', usersController.delete);
+        this.router.delete('/', usersController.deleteAll);
         // this.router.get('/login', usersController.login);
     }
 }
