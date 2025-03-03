@@ -1,42 +1,42 @@
 const { getConnection } = require('../db/dbConnection');
 
-class directionsController {
+class officesController {
 
-  // Obtener todos los direcciónes
+  // Obtener todos los usuarios
   static async getAll(req, res) {
     const connection = await getConnection();
     try {
-      const result = await connection.execute('SELECT * FROM directions');
+      const result = await connection.execute('SELECT * FROM offices');
       res.json(result.rows);
     } catch (error) {
-      res.status(500).json({ error: "Error al obtener direcciónes" });
+      res.status(500).json({ error: "Error al obtener usuarios" });
     } finally {
       await connection.close();
     }
   }
 
-  // Obtener un dirección por ID
+  // Obtener un usuario por ID
   static async getOne(req, res) {
     const { id } = req.params; // Obtener el ID de la URL
     const connection = await getConnection();
     try {
-      const result = await connection.execute('SELECT * FROM directions WHERE ID = :id', [id]);
+      const result = await connection.execute('SELECT * FROM offices WHERE ID = :id', [id]);
       if (result.rows.length === 0) {
         return res.status(404).json({ error: "Usuario no encontrado" });
       }
       res.json(result.rows[0]);
     } catch (error) {
-      res.status(500).json({ error: "Error al obtener el dirección" });
+      res.status(500).json({ error: "Error al obtener el usuario" });
     } finally {
       await connection.close();
     }
   }
 
-  // insertar un dirección
+  // insertar un usuario
   static async store(req, res) {
     const connection = await getConnection();
     try {
-      const { id, client_id, address, created_at, updated_at } = req.body;
+      const { id, name, created_at, updated_at } = req.body;
       if(!created_at){
         created_at = new Date();
       }
@@ -51,25 +51,25 @@ class directionsController {
 
       }
       await connection.execute(
-        `INSERT INTO directions (id, client_id, address, created_at, updated_at) 
-         VALUES (:id, :client_id, :address, :created_at, :updated_at)`,
-        [id, client_id, address, created_at, updated_at],
+        `INSERT INTO offices (id, name, created_at, updated_at) 
+         VALUES (:id, :name, :created_at, :updated_at)`,
+        [id, name, created_at, updated_at],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
-      res.json({ message: "Usuario insertado correctamente", user: { id, client_id, address, created_at, updated_at } });
+      res.json({ message: "Usuario insertado correctamente", user: { id, name, created_at, updated_at } });
     } catch (error) {
       console.error("Error en la inserción:", error);
-      res.status(500).json({ error: "Error al insertar el dirección" });
+      res.status(500).json({ error: "Error al insertar el usuario" });
     }
     finally {
       await connection.close();
     }
   }
 
-  // Actualizar un dirección
+  // Actualizar un usuario
   static async update(req, res) {
     const { id } = req.params;
-    const {client_id, address, created_at, updated_at } = req.body;
+    const { name, created_at, updated_at } = req.body;
     const connection = await getConnection();
     if(!created_at){
       created_at = new Date();
@@ -81,46 +81,46 @@ class directionsController {
 
     try {
       await connection.execute(
-        `UPDATE directions
-        SET client_id = :client_id, address = :address, created_at = :created_at, updated_at = :updated_at
+        `UPDATE offices
+        SET name = :name, created_at = :created_at, updated_at = :updated_at
         WHERE id = :id`,
-        [client_id, address, created_at, updated_at, id],
+        [ name, created_at, updated_at, id],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
       res.json({ message: "Usuario actualizado correctamente" });
     } catch (error) {
-      res.status(500).json({ error: "Error al actualizar el dirección" });
+      res.status(500).json({ error: "Error al actualizar el usuario" });
     } finally {
       await connection.close();
     }
   }
 
-  // Eliminar un dirección
+  // Eliminar un usuario
   static async delete(req, res) {
     const { id } = req.params;
     const connection = await getConnection();
     try {
-      await connection.execute(`DELETE FROM directions 
+      await connection.execute(`DELETE FROM offices 
           WHERE id = :id`, [id],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
       res.json({ message: "Usuario eliminado correctamente" });
     } catch (error) {
-      res.status(500).json({ error: "Error al eliminar el dirección" });
+      res.status(500).json({ error: "Error al eliminar el usuario" });
     } finally {
       await connection.close();
     }
   }
 
-  // Eliminar todos los direcciónes
+  // Eliminar todos los usuarios
   static async deleteAll(req, res) {
     const connection = await getConnection();
     try {
-      await connection.execute(`DELETE FROM directions`, [], { autoCommit: true }
+      await connection.execute(`DELETE FROM offices`, [], { autoCommit: true }
       );
-      res.json({ message: "Todos los direcciónes fueron eliminados correctamente" });
+      res.json({ message: "Todos los usuarios fueron eliminados correctamente" });
     } catch (error) {
-      res.status(500).json({ error: "Error al eliminar todos los direcciónes" });
+      res.status(500).json({ error: "Error al eliminar todos los usuarios" });
     } finally {
       await connection.close();
     }
@@ -132,4 +132,4 @@ class directionsController {
   }
 }
 
-module.exports = directionsController;
+module.exports = officesController;

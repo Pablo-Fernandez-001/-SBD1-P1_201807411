@@ -10,6 +10,9 @@ const productsRoutes = require('./routes/productsRoutes');
 const categoriesRoutes = require('./routes/categoriesRoutes');
 const paymentsRoutes = require('./routes/paymentsRoutes');
 const directionsRoutes = require('./routes/directionsRoutes');
+const workersRoutes = require('./routes/workersRoutes');
+const departmentsRoutes = require('./routes/departmentsRoutes');
+const officesRoutes = require('./routes/officesroutes');
 
 // Server
 class Server {
@@ -48,11 +51,11 @@ class Server {
         // directions
         this.app.use('/api/directions', directionsRoutes);
         // workers
-        //this.app.use('/api/workers', workersRoutes);
+        this.app.use('/api/workers', workersRoutes);
         // departments
-        //this.app.use('/api/departments', departmentsRoutes);
+        this.app.use('/api/departments', departmentsRoutes);
         // offices
-        //this.app.use('/api/offices', officesRoutes);
+        this.app.use('/api/offices', officesRoutes);
         // orders
         //this.app.use('/api/orders', ordersRoutes);
         // products_orders
