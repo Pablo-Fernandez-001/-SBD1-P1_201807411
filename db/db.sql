@@ -86,7 +86,6 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Crear las tablas dependientes después
 CREATE TABLE payments (
     id NUMBER PRIMARY KEY,
     client_id NUMBER REFERENCES clients(id),

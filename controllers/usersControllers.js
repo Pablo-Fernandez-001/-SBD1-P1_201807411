@@ -37,13 +37,6 @@ class usersController {
     const connection = await getConnection();
     try {
       const { id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
-      if(!created_at){
-        created_at = new Date();
-      }
-
-      if(!updated_at){
-        updated_at = new Date();
-      }
 
       console.log(req.body);
       if (!req.body) {
@@ -71,13 +64,6 @@ class usersController {
     const { id } = req.params;
     const { national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
     const connection = await getConnection();
-    if(!created_at){
-      created_at = new Date();
-    }
-
-    if(!updated_at){
-      updated_at = new Date();
-    }
 
     try {
       await connection.execute(

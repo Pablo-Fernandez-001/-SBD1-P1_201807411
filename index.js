@@ -34,13 +34,26 @@ class Server {
 
     routes() {
         // Auths
-        // users
+        // users - clients
         this.app.use('/api/users', usersRoutes);
-        // proyects
-        this.app.use('/api/products', productsRoutes);
-        // tasks
-        // notes
-        // bulkloads
+        // products
+        // this.app.use('/api/products', productsRoutes);
+        // categories
+        //this.app.use('/api/categories', usersRoutes);
+        // payments
+        // directions
+        // workers
+        // departments
+        // offices
+        // orders
+        // products_orders
+        // payments_orders
+        // inventory
+        // products_movements
+        // images
+        // movements
+        // delivered_orders
+        // products_devolution
 
     }
 

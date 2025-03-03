@@ -4,7 +4,7 @@ const productController = require('../controllers/productsControllers');
 class ProductRoutes {
     constructor() {
         this.router = express.Router();
-        this.routes();
+        this.router();
     }
     router() {
         this.router.get('/', productController.getAll);
@@ -17,5 +17,5 @@ class ProductRoutes {
 
 }
 
-const ProductRoutes = new ProductRoutes();
-module.exports = ProductRoutes.router;
+const productsRoutes = new ProductRoutes();
+module.exports = productsRoutes.router;
