@@ -1,8 +1,8 @@
 const { getConnection } = require('../db/dbConnection');
 
-class productsController {
+class productController {
 
-    async getAll(req, res) {
+    static async getAll(req, res) {
         const connection = await getConnection();
         try {
             const result = await connection.execute('SELECT * FROM products');
@@ -14,7 +14,7 @@ class productsController {
         }
     }
 
-    async getOne(req, res) {
+    static async getOne(req, res) {
         const { id } = req.params;
         const connection = await getConnection();
         try {
@@ -30,7 +30,7 @@ class productsController {
         }
     }
 
-    async store(req, res) {
+    static async store(req, res) {
         const connection = await getConnection();
         try {
             const { id, sku, name, description, price, slug, category_id, active, created_at, updated_at } = req.body;
@@ -53,7 +53,7 @@ class productsController {
         }
     }
 
-    async update(req, res) {
+    static async update(req, res) {
         const { id } = req.params;
         const { sku, name, description, price, slug, category_id, active, created_at, updated_at } = req.body;
         const connection = await getConnection();
@@ -80,7 +80,7 @@ class productsController {
         }
     }
 
-    async delete(req, res) {
+    static async delete(req, res) {
         const { id } = req.params;
         const connection = await getConnection();
         try {
@@ -95,7 +95,7 @@ class productsController {
         }
     }
 
-    async deleteAll(req, res) {
+    static async deleteAll(req, res) {
         const connection = await getConnection();
         try {
             await connection.execute('DELETE FROM products', [], { autoCommit: true });
@@ -110,4 +110,4 @@ class productsController {
     }
 }
 
-module.exports = productsController;
+module.exports = productController;
