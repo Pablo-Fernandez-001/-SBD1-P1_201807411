@@ -1,7 +1,7 @@
 const express = require('express');
 const productController = require('../controllers/productsControllers');
 
-class ProductRoutes {
+class ProductsRoutes {
     constructor() {
         this.router = express.Router();
         this.router();
@@ -17,5 +17,6 @@ class ProductRoutes {
 
 }
 
-const productsRoutes = new ProductRoutes();
-module.exports = productsRoutes.router;
+
+const productRoutes = new ProductsRoutes();
+module.exports = productRoutes.router;

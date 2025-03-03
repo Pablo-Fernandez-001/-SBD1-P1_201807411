@@ -6,6 +6,7 @@ require('dotenv').config();
 // Routes
 const { getConnection } = require('./db/dbConnection');
 const usersRoutes = require('./routes/usersRoutes');
+// const productsRoutes = require('./routes/productsRoutes');
 
 // Server
 class Server {

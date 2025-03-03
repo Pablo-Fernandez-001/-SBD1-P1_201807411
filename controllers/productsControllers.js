@@ -2,10 +2,6 @@ const { getConnection } = require('../db/dbConnection');
 
 class productController {
 
-    async index(req, res) {
-        res.json('Index de proyectos');
-    }
-
     async getAll(req, res) {
         const connection = await getConnection();
         try {
@@ -114,4 +110,4 @@ class productController {
     }
 }
 
-module.exports = new productController();
+module.exports = productController;
