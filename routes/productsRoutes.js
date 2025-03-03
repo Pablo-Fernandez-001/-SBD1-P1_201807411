@@ -1,22 +1,21 @@
 const express = require('express');
-const productController = require('../controllers/productsControllers');
+const productsController = require('../controllers/productsControllers');
 
 class ProductsRoutes {
     constructor() {
         this.router = express.Router();
-        this.router();
-    }
-    router() {
-        this.router.get('/', productController.getAll);
-        this.router.get('/:id', productController.getOne);
-        this.router.post('/', productController.store);
-        this.router.put('/:id', productController.update);
-        this.router.delete('/:id', productController.delete);
-        this.router.delete('/', productController.deleteAll);
+        this.routes();
     }
 
+    routes() {
+        this.router.get('/', productsController.getAll);
+        this.router.get('/:id', productsController.getOne);
+        this.router.post('/', productsController.store);
+        this.router.put('/:id', productsController.update);
+        this.router.delete('/:id', productsController.delete);
+        this.router.delete('/', productsController.deleteAll);
+    }
 }
-
 
 const productRoutes = new ProductsRoutes();
 module.exports = productRoutes.router;

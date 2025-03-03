@@ -1,6 +1,6 @@
 const { getConnection } = require('../db/dbConnection');
 
-class productController {
+class productsController {
 
     async getAll(req, res) {
         const connection = await getConnection();
@@ -110,4 +110,4 @@ class productController {
     }
 }
 
-module.exports = productController;
+module.exports = productsController;
