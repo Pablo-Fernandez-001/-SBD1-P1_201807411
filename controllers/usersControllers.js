@@ -1,7 +1,7 @@
 const { getConnection } = require('../db/dbConnection');
 
 class usersController {
-  
+
   // Obtener todos los usuarios
   static async getAll(req, res) {
     const connection = await getConnection();
@@ -38,9 +38,9 @@ class usersController {
     try {
       const { id, national_document, name, lastname, phone, email, active, confirmed_email, password } = req.body;
       console.log(req.body);
-      if(!req.body){
+      if (!req.body) {
         return res.status(400).json({ error: "Faltan datos" });
-        
+
       }
       await connection.execute(
         `INSERT INTO clients (id, national_document, name, lastname, phone, email, active, confirmed_email, password) 
@@ -48,15 +48,15 @@ class usersController {
         [id, national_document, name, lastname, phone, email, active, confirmed_email, password],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
-      res.json({ message: "Usuario insertado correctamente", user:  {id, national_document, name, lastname, phone, email, active, confirmed_email, password} });
+      res.json({ message: "Usuario insertado correctamente", user: { id, national_document, name, lastname, phone, email, active, confirmed_email, password } });
     } catch (error) {
-        console.error("Error en la inserción:", error);
-        res.status(500).json({ error: "Error al insertar el usuario" });
+      console.error("Error en la inserción:", error);
+      res.status(500).json({ error: "Error al insertar el usuario" });
     }
-     finally {
-        await connection.close();
+    finally {
+      await connection.close();
     }
-}
+  }
 
   // Actualizar un usuario
   static async update(req, res) {
@@ -80,34 +80,35 @@ class usersController {
   }
 
   // Eliminar un usuario
-    static async delete(req, res) {
-        const { id } = req.params;
-        const connection = await getConnection();
-        try {
-        await connection.execute(`DELETE FROM clients 
+  static async delete(req, res) {
+    const { id } = req.params;
+    const connection = await getConnection();
+    try {
+      await connection.execute(`DELETE FROM clients 
           WHERE id = :id`, [id],
-          { autoCommit: true } // Asegúrate de que esto esté aquí
-          );
-        res.json({ message: "Usuario eliminado correctamente" });
-        } catch (error) {
-        res.status(500).json({ error: "Error al eliminar el usuario" });
-        } finally {
-        await connection.close();
-        }
+        { autoCommit: true } // Asegúrate de que esto esté aquí
+      );
+      res.json({ message: "Usuario eliminado correctamente" });
+    } catch (error) {
+      res.status(500).json({ error: "Error al eliminar el usuario" });
+    } finally {
+      await connection.close();
     }
+  }
 
-    // Eliminar todos los usuarios
-    static async deleteAll(req, res) {
-        const connection = await getConnection();
-        try {
-        await connection.execute('DELETE FROM clients');
-        res.json({ message: "Usuarios eliminados correctamente" });
-        } catch (error) {
-        res.status(500).json({ error: "Error al eliminar los usuarios" });
-        } finally {
-        await connection.close();
-        }
+  // Eliminar todos los usuarios
+  static async deleteAll(req, res) {
+    const connection = await getConnection();
+    try {
+      await connection.execute(`DELETE FROM clients`, [], { autoCommit: true }
+      );
+      res.json({ message: "Todos los usuarios fueron eliminados correctamente" });
+    } catch (error) {
+      res.status(500).json({ error: "Error al eliminar todos los usuarios" });
+    } finally {
+      await connection.close();
     }
+  }
 }
 
 module.exports = usersController;
