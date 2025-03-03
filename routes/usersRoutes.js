@@ -1,5 +1,6 @@
 const express = require('express');
 const usersController = require('../controllers/usersControllers');
+const usersControllers = require('../controllers/usersControllers');
 
 class UsersRoutes {
     constructor() {

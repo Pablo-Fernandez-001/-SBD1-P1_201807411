@@ -6,7 +6,6 @@ require('dotenv').config();
 // Routes
 const { getConnection } = require('./db/dbConnection');
 const usersRoutes = require('./routes/usersRoutes');
-const productsRoutes = require('./routes/productsRoutes');
 
 // Server
 class Server {
@@ -34,26 +33,12 @@ class Server {
 
     routes() {
         // Auths
-        // users - clients
+        // users
         this.app.use('/api/users', usersRoutes);
-        // products
-        // this.app.use('/api/products', productsRoutes);
-        // categories
-        //this.app.use('/api/categories', usersRoutes);
-        // payments
-        // directions
-        // workers
-        // departments
-        // offices
-        // orders
-        // products_orders
-        // payments_orders
-        // inventory
-        // products_movements
-        // images
-        // movements
-        // delivered_orders
-        // products_devolution
+        // proyects
+        // tasks
+        // notes
+        // bulkloads
 
     }
 
