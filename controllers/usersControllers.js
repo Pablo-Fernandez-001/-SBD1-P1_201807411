@@ -36,19 +36,27 @@ class usersController {
   static async store(req, res) {
     const connection = await getConnection();
     try {
-      const { id, national_document, name, lastname, phone, email, active, confirmed_email, password } = req.body;
+      const { id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
+      if(!created_at){
+        created_at = new Date();
+      }
+
+      if(!updated_at){
+        updated_at = new Date();
+      }
+
       console.log(req.body);
       if (!req.body) {
         return res.status(400).json({ error: "Faltan datos" });
 
       }
       await connection.execute(
-        `INSERT INTO clients (id, national_document, name, lastname, phone, email, active, confirmed_email, password) 
-         VALUES (:id, :national_document, :name, :lastname, :phone, :email, :active, :confirmed_email, :password)`,
-        [id, national_document, name, lastname, phone, email, active, confirmed_email, password],
+        `INSERT INTO clients (id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at) 
+         VALUES (:id, :national_document, :name, :lastname, :phone, :email, :active, :confirmed_email, :password, :created_at, :updated_at)`,
+        [id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
-      res.json({ message: "Usuario insertado correctamente", user: { id, national_document, name, lastname, phone, email, active, confirmed_email, password } });
+      res.json({ message: "Usuario insertado correctamente", user: { id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } });
     } catch (error) {
       console.error("Error en la inserción:", error);
       res.status(500).json({ error: "Error al insertar el usuario" });
@@ -61,14 +69,22 @@ class usersController {
   // Actualizar un usuario
   static async update(req, res) {
     const { id } = req.params;
-    const { national_document, name, lastname, phone, email, active, confirmed_email, password } = req.body;
+    const { national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
     const connection = await getConnection();
+    if(!created_at){
+      created_at = new Date();
+    }
+
+    if(!updated_at){
+      updated_at = new Date();
+    }
+
     try {
       await connection.execute(
         `UPDATE clients
-        SET national_document = :national_document, name = :name, lastname = :lastname, phone = :phone, email = :email, active = :active, confirmed_email = :confirmed_email, password = :password
+        SET national_document = :national_document, name = :name, lastname = :lastname, phone = :phone, email = :email, active = :active, confirmed_email = :confirmed_email, password = :password, created_at = :created_at, updated_at = :updated_at
         WHERE id = :id`,
-        [national_document, name, lastname, phone, email, active, confirmed_email, password, id],
+        [national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at, id],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
       res.json({ message: "Usuario actualizado correctamente" });
@@ -108,6 +124,11 @@ class usersController {
     } finally {
       await connection.close();
     }
+  }
+
+  // Login
+  static async login(req, res) {
+    const { email, password } = req.body;
   }
 }
 
