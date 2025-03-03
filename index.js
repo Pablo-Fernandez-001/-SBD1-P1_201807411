@@ -7,6 +7,9 @@ require('dotenv').config();
 const { getConnection } = require('./db/dbConnection');
 const usersRoutes = require('./routes/usersRoutes');
 const productsRoutes = require('./routes/productsRoutes');
+const categoriesRoutes = require('./routes/categoriesRoutes');
+const paymentsRoutes = require('./routes/paymentsRoutes');
+const directionsRoutes = require('./routes/directionsRoutes');
 
 // Server
 class Server {
@@ -39,35 +42,35 @@ class Server {
         // products
         this.app.use('/api/products', productsRoutes);
         // categories
-        //this.app.use('/api/categories', categoriesRoutes);
+        this.app.use('/api/categories', categoriesRoutes);
         // payments
-        //this.app.use('/api/categories', paymentsRoutes);
+        this.app.use('/api/payments', paymentsRoutes);
         // directions
-        //this.app.use('/api/categories', directionsRoutes);
+        this.app.use('/api/directions', directionsRoutes);
         // workers
-        //this.app.use('/api/categories', workersRoutes);
+        //this.app.use('/api/workers', workersRoutes);
         // departments
-        //this.app.use('/api/categories', departmentsRoutes);
+        //this.app.use('/api/departments', departmentsRoutes);
         // offices
-        //this.app.use('/api/categories', officesRoutes);
+        //this.app.use('/api/offices', officesRoutes);
         // orders
-        //this.app.use('/api/categories', ordersRoutes);
+        //this.app.use('/api/orders', ordersRoutes);
         // products_orders
-        //this.app.use('/api/categories', productsOrdersRoutes);
+        //this.app.use('/api/productsOrders', productsOrdersRoutes);
         // payments_orders
-        //this.app.use('/api/categories', paymentsOrdersRoutes);
+        //this.app.use('/api/paymentsOrders', paymentsOrdersRoutes);
         // inventory
-        //this.app.use('/api/categories', inventoryRoutes);
+        //this.app.use('/api/inventory', inventoryRoutes);
         // products_movements
-        //this.app.use('/api/categories', productsMovementsRoutes);
+        //this.app.use('/api/productsMovements', productsMovementsRoutes);
         // images
-        //this.app.use('/api/categories', imagesRoutes);
+        //this.app.use('/api/images', imagesRoutes);
         // movements
-        //this.app.use('/api/categories', movementsRoutes);
+        //this.app.use('/api/movements', movementsRoutes);
         // delivered_orders
-        //this.app.use('/api/categories', deliveredOrdersRoutes);
+        //this.app.use('/api/deliveredOrders', deliveredOrdersRoutes);
         // products_devolution
-        //this.app.use('/api/categories', productsDevolutionRoutes);
+        //this.app.use('/api/productsDevolution', productsDevolutionRoutes);
     }
 
     start() {
