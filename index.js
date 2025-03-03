@@ -36,11 +36,38 @@ class Server {
         // Auths
         // users
         this.app.use('/api/users', usersRoutes);
-        // proyects
-        // tasks
-        // notes
-        // bulkloads
-
+        // products
+        this.app.use('/api/products', productsRoutes);
+        // categories
+        //this.app.use('/api/categories', categoriesRoutes);
+        // payments
+        //this.app.use('/api/categories', paymentsRoutes);
+        // directions
+        //this.app.use('/api/categories', directionsRoutes);
+        // workers
+        //this.app.use('/api/categories', workersRoutes);
+        // departments
+        //this.app.use('/api/categories', departmentsRoutes);
+        // offices
+        //this.app.use('/api/categories', officesRoutes);
+        // orders
+        //this.app.use('/api/categories', ordersRoutes);
+        // products_orders
+        //this.app.use('/api/categories', productsOrdersRoutes);
+        // payments_orders
+        //this.app.use('/api/categories', paymentsOrdersRoutes);
+        // inventory
+        //this.app.use('/api/categories', inventoryRoutes);
+        // products_movements
+        //this.app.use('/api/categories', productsMovementsRoutes);
+        // images
+        //this.app.use('/api/categories', imagesRoutes);
+        // movements
+        //this.app.use('/api/categories', movementsRoutes);
+        // delivered_orders
+        //this.app.use('/api/categories', deliveredOrdersRoutes);
+        // products_devolution
+        //this.app.use('/api/categories', productsDevolutionRoutes);
     }
 
     start() {
