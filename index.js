@@ -13,6 +13,15 @@ const directionsRoutes = require('./routes/directionsRoutes');
 const workersRoutes = require('./routes/workersRoutes');
 const departmentsRoutes = require('./routes/departmentsRoutes');
 const officesRoutes = require('./routes/officesroutes');
+const ordersRoutes = require('./routes/ordersRoutes');
+const productsOrdersRoutes = require('./routes/productsOrdersRoutes');
+const paymentsOrdersRoutes = require('./routes/paymentsOrdersRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const productsMovementsRoutes = require('./routes/productsMovementsRoutes');
+const imagesRoutes = require('./routes/imagesRoutes');
+const movementsRoutes = require('./routes/movementsRoutes');
+const deliveredOrdersRoutes = require('./routes/deliveredOrdersRoutes');
+const productsDevolutionRoutes = require('./routes/productsDevolutionRoutes');
 
 // Server
 class Server {
@@ -57,23 +66,23 @@ class Server {
         // offices
         this.app.use('/api/offices', officesRoutes);
         // orders
-        //this.app.use('/api/orders', ordersRoutes);
+        this.app.use('/api/orders', ordersRoutes);
         // products_orders
-        //this.app.use('/api/productsOrders', productsOrdersRoutes);
+        this.app.use('/api/productsOrders', productsOrdersRoutes);
         // payments_orders
-        //this.app.use('/api/paymentsOrders', paymentsOrdersRoutes);
+        this.app.use('/api/paymentsOrders', paymentsOrdersRoutes);
         // inventory
-        //this.app.use('/api/inventory', inventoryRoutes);
+        this.app.use('/api/inventory', inventoryRoutes);
         // products_movements
-        //this.app.use('/api/productsMovements', productsMovementsRoutes);
+        this.app.use('/api/productsMovements', productsMovementsRoutes);
         // images
-        //this.app.use('/api/images', imagesRoutes);
+        this.app.use('/api/images', imagesRoutes);
         // movements
-        //this.app.use('/api/movements', movementsRoutes);
+        this.app.use('/api/movements', movementsRoutes);
         // delivered_orders
-        //this.app.use('/api/deliveredOrders', deliveredOrdersRoutes);
+        this.app.use('/api/deliveredOrders', deliveredOrdersRoutes);
         // products_devolution
-        //this.app.use('/api/productsDevolution', productsDevolutionRoutes);
+        this.app.use('/api/productsDevolution', productsDevolutionRoutes);
     }
 
     start() {
