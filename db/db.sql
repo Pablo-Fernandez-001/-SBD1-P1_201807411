@@ -49,7 +49,7 @@ CREATE TABLE clients (
     national_document VARCHAR2(50) UNIQUE NOT NULL,
     name VARCHAR2(255) NOT NULL,
     lastname VARCHAR2(255) NOT NULL,
-    phone VARCHAR2(20),
+    phone VARCHAR2(255),
     email VARCHAR2(255) UNIQUE,
     active NUMBER(1) DEFAULT 1,
     confirmed_email NUMBER(1) DEFAULT 1,

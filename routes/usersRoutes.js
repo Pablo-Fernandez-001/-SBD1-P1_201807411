@@ -1,5 +1,11 @@
 const express = require('express');
 const usersController = require('../controllers/usersControllers');
+const multer = require('multer');
+const fs = require('fs');
+const csv = require('csv-parser');
+
+const app = express();
+const upload = multer({ dest: 'uploads/' });
 
 class UsersRoutes {
     constructor() {
@@ -14,6 +20,7 @@ class UsersRoutes {
         this.router.put('/:id', usersController.update);
         this.router.delete('/:id', usersController.delete);
         this.router.delete('/', usersController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), usersController.bulkLoad);
         // this.router.get('/login', usersController.login);
     }
 }
