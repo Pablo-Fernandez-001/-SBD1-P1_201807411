@@ -1,21 +1,21 @@
 -- Eliminar tablas existentes
-DROP TABLE products_devolution CASCADE CONSTRAINTS;
-DROP TABLE delivered_orders CASCADE CONSTRAINTS;
-DROP TABLE images CASCADE CONSTRAINTS;
-DROP TABLE products_movements CASCADE CONSTRAINTS;
-DROP TABLE movements CASCADE CONSTRAINTS;
-DROP TABLE inventory CASCADE CONSTRAINTS;
-DROP TABLE payments_orders CASCADE CONSTRAINTS;
-DROP TABLE products_orders CASCADE CONSTRAINTS;
-DROP TABLE orders CASCADE CONSTRAINTS;
-DROP TABLE directions CASCADE CONSTRAINTS;
-DROP TABLE payments CASCADE CONSTRAINTS;
-DROP TABLE clients CASCADE CONSTRAINTS;
-DROP TABLE offices CASCADE CONSTRAINTS;
-DROP TABLE departments CASCADE CONSTRAINTS;
-DROP TABLE workers CASCADE CONSTRAINTS;
-DROP TABLE products CASCADE CONSTRAINTS;
-DROP TABLE categories CASCADE CONSTRAINTS;
+DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- NO
+DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X
+DROP TABLE images CASCADE CONSTRAINTS;                  -- NO
+DROP TABLE products_movements CASCADE CONSTRAINTS;      -- NO
+DROP TABLE movements CASCADE CONSTRAINTS;               -- NO
+DROP TABLE inventory CASCADE CONSTRAINTS;               -- NO
+DROP TABLE payments_orders CASCADE CONSTRAINTS;         -- X
+DROP TABLE products_orders CASCADE CONSTRAINTS;         -- NO
+DROP TABLE orders CASCADE CONSTRAINTS;                  -- X
+DROP TABLE directions CASCADE CONSTRAINTS;              -- X
+DROP TABLE payments CASCADE CONSTRAINTS;                -- NO
+DROP TABLE clients CASCADE CONSTRAINTS;                 -- X
+DROP TABLE offices CASCADE CONSTRAINTS;                 -- X
+DROP TABLE departments CASCADE CONSTRAINTS;             -- X
+DROP TABLE workers CASCADE CONSTRAINTS;                 -- X
+DROP TABLE products CASCADE CONSTRAINTS;                -- NO
+DROP TABLE categories CASCADE CONSTRAINTS;              -- X
 
 -- Crear tablas
 CREATE TABLE categories (
@@ -73,7 +73,7 @@ CREATE TABLE products (
     sku VARCHAR2(100) UNIQUE NOT NULL,
     name VARCHAR2(255) NOT NULL,
     description CLOB,
-    price NUMBER(10,2) NOT NULL,
+    price NUMBER NOT NULL,
     slug VARCHAR2(255) UNIQUE NOT NULL,
     category_id NUMBER REFERENCES categories(id) ON DELETE SET NULL,
     active NUMBER(1) DEFAULT 1,
@@ -137,7 +137,7 @@ CREATE TABLE movements (
     id NUMBER PRIMARY KEY,
     location_origin_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     location_dest_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
-    status VARCHAR2(50),
+    status VARCHAR2(250),
     estimate_arrive_date DATE,
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
