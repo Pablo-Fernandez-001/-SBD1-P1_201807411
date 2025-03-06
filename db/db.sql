@@ -1,21 +1,23 @@
-DROP TABLE categories CASCADE CONSTRAINTS;
-DROP TABLE clients CASCADE CONSTRAINTS;
-DROP TABLE payments CASCADE CONSTRAINTS;
-DROP TABLE directions CASCADE CONSTRAINTS;
-DROP TABLE workers CASCADE CONSTRAINTS;
-DROP TABLE departments CASCADE CONSTRAINTS;
-DROP TABLE offices CASCADE CONSTRAINTS;
-DROP TABLE orders CASCADE CONSTRAINTS;
-DROP TABLE products_orders CASCADE CONSTRAINTS;
-DROP TABLE payments_orders CASCADE CONSTRAINTS;
-DROP TABLE inventory CASCADE CONSTRAINTS;
-DROP TABLE products_movements CASCADE CONSTRAINTS;
-DROP TABLE products CASCADE CONSTRAINTS;
-DROP TABLE images CASCADE CONSTRAINTS;
-DROP TABLE movements CASCADE CONSTRAINTS;
-DROP TABLE delivered_orders CASCADE CONSTRAINTS;
+-- Eliminar tablas existentes
 DROP TABLE products_devolution CASCADE CONSTRAINTS;
+DROP TABLE delivered_orders CASCADE CONSTRAINTS;
+DROP TABLE images CASCADE CONSTRAINTS;
+DROP TABLE products_movements CASCADE CONSTRAINTS;
+DROP TABLE movements CASCADE CONSTRAINTS;
+DROP TABLE inventory CASCADE CONSTRAINTS;
+DROP TABLE payments_orders CASCADE CONSTRAINTS;
+DROP TABLE products_orders CASCADE CONSTRAINTS;
+DROP TABLE orders CASCADE CONSTRAINTS;
+DROP TABLE directions CASCADE CONSTRAINTS;
+DROP TABLE payments CASCADE CONSTRAINTS;
+DROP TABLE clients CASCADE CONSTRAINTS;
+DROP TABLE offices CASCADE CONSTRAINTS;
+DROP TABLE departments CASCADE CONSTRAINTS;
+DROP TABLE workers CASCADE CONSTRAINTS;
+DROP TABLE products CASCADE CONSTRAINTS;
+DROP TABLE categories CASCADE CONSTRAINTS;
 
+-- Crear tablas
 CREATE TABLE categories (
     id NUMBER PRIMARY KEY,
     name VARCHAR2(255) NOT NULL,
@@ -25,14 +27,7 @@ CREATE TABLE categories (
 
 CREATE TABLE departments (
     id NUMBER PRIMARY KEY,
-    national_document VARCHAR2(50) UNIQUE NOT NULL,
     name VARCHAR2(255) NOT NULL,
-    lastname VARCHAR2(255) NOT NULL,
-    phone VARCHAR2(20),
-    email VARCHAR2(255) UNIQUE,
-    active NUMBER(1) DEFAULT 1,
-    confirmed_email NUMBER(1) DEFAULT 1,
-    password VARCHAR2(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -64,10 +59,10 @@ CREATE TABLE workers (
     name VARCHAR2(255) NOT NULL,
     lastname VARCHAR2(255) NOT NULL,
     job VARCHAR2(100),
-    department_id NUMBER REFERENCES departments(id),
-    phone VARCHAR2(20),
+    department_id NUMBER REFERENCES departments(id) ON DELETE SET NULL,
+    phone VARCHAR2(255),
     email VARCHAR2(255) UNIQUE,
-    location_id NUMBER REFERENCES offices(id),
+    location_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     active NUMBER(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -80,7 +75,7 @@ CREATE TABLE products (
     description CLOB,
     price NUMBER(10,2) NOT NULL,
     slug VARCHAR2(255) UNIQUE NOT NULL,
-    category_id NUMBER REFERENCES categories(id),
+    category_id NUMBER REFERENCES categories(id) ON DELETE SET NULL,
     active NUMBER(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -88,7 +83,7 @@ CREATE TABLE products (
 
 CREATE TABLE payments (
     id NUMBER PRIMARY KEY,
-    client_id NUMBER REFERENCES clients(id),
+    client_id NUMBER REFERENCES clients(id) ON DELETE CASCADE,
     payment_method VARCHAR2(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -96,7 +91,7 @@ CREATE TABLE payments (
 
 CREATE TABLE directions (
     id NUMBER PRIMARY KEY,
-    client_id NUMBER REFERENCES clients(id),
+    client_id NUMBER REFERENCES clients(id) ON DELETE CASCADE,
     address VARCHAR2(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -104,16 +99,16 @@ CREATE TABLE directions (
 
 CREATE TABLE orders (
     id NUMBER PRIMARY KEY,
-    client_id NUMBER REFERENCES clients(id),
-    location_id NUMBER REFERENCES offices(id),
+    client_id NUMBER REFERENCES clients(id) ON DELETE CASCADE,
+    location_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE products_orders (
     id NUMBER PRIMARY KEY,
-    order_id NUMBER REFERENCES orders(id),
-    product_id NUMBER REFERENCES products(id),
+    order_id NUMBER REFERENCES orders(id) ON DELETE CASCADE,
+    product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
     quantity NUMBER NOT NULL,
     price NUMBER(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -122,7 +117,7 @@ CREATE TABLE products_orders (
 
 CREATE TABLE payments_orders (
     id NUMBER PRIMARY KEY,
-    order_id NUMBER REFERENCES orders(id),
+    order_id NUMBER REFERENCES orders(id) ON DELETE CASCADE,
     payment_method VARCHAR2(100),
     status VARCHAR2(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -131,8 +126,8 @@ CREATE TABLE payments_orders (
 
 CREATE TABLE inventory (
     id NUMBER PRIMARY KEY,
-    product_id NUMBER REFERENCES products(id),
-    location_id NUMBER REFERENCES offices(id),
+    product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
+    location_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     quantity NUMBER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -140,8 +135,8 @@ CREATE TABLE inventory (
 
 CREATE TABLE movements (
     id NUMBER PRIMARY KEY,
-    location_origin_id NUMBER REFERENCES offices(id),
-    location_dest_id NUMBER REFERENCES offices(id),
+    location_origin_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
+    location_dest_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     status VARCHAR2(50),
     estimate_arrive_date DATE,
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -151,8 +146,8 @@ CREATE TABLE movements (
 
 CREATE TABLE products_movements (
     id NUMBER PRIMARY KEY,
-    movement_id NUMBER REFERENCES movements(id),
-    product_id NUMBER REFERENCES products(id),
+    movement_id NUMBER REFERENCES movements(id) ON DELETE CASCADE,
+    product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
     quantity NUMBER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -160,7 +155,7 @@ CREATE TABLE products_movements (
 
 CREATE TABLE images (
     id NUMBER PRIMARY KEY,
-    product_id NUMBER REFERENCES products(id),
+    product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
     image VARCHAR2(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -168,7 +163,7 @@ CREATE TABLE images (
 
 CREATE TABLE delivered_orders (
     id NUMBER PRIMARY KEY,
-    order_id NUMBER REFERENCES orders(id),
+    order_id NUMBER REFERENCES orders(id) ON DELETE CASCADE,
     company VARCHAR2(255),
     address VARCHAR2(255),
     number_company_guide VARCHAR2(100),
@@ -180,7 +175,7 @@ CREATE TABLE delivered_orders (
 
 CREATE TABLE products_devolution (
     id NUMBER PRIMARY KEY,
-    product_id NUMBER REFERENCES products(id),
+    product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
     description CLOB,
     status VARCHAR2(50),
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -188,6 +183,7 @@ CREATE TABLE products_devolution (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Consultas para verificar datos
 SELECT * FROM categories;
 SELECT * FROM clients;
 SELECT * FROM payments;

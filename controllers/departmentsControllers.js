@@ -47,7 +47,7 @@ class departmentsController {
   static async store(req, res) {
     const connection = await getConnection();
     try {
-      const { id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
+      const { id, name, created_at, updated_at } = req.body;
       if(!created_at){
         created_at = new Date();
       }
@@ -62,12 +62,12 @@ class departmentsController {
 
       }
       await connection.execute(
-        `INSERT INTO departments (id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at) 
-         VALUES (:id, :national_document, :name, :lastname, :phone, :email, :active, :confirmed_email, :password, :created_at, :updated_at)`,
-        [id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at],
+        `INSERT INTO departments (id, name, created_at, updated_at) 
+         VALUES (:id, :name, :created_at, :updated_at)`,
+        [id, name, created_at, updated_at],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
-      res.json({ message: "Departamento insertado correctamente", user: { id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } });
+      res.json({ message: "Departamento insertado correctamente", user: { id, name, created_at, updated_at } });
     } catch (error) {
       console.error("Error en la inserción:", error);
       res.status(500).json({ error: "Error al insertar el usuario" });
@@ -80,7 +80,7 @@ class departmentsController {
   // Actualizar un usuario
   static async update(req, res) {
     const { id } = req.params;
-    const { national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
+    const { name, created_at, updated_at } = req.body;
     const connection = await getConnection();
     if(!created_at){
       created_at = new Date();
@@ -93,9 +93,9 @@ class departmentsController {
     try {
       await connection.execute(
         `UPDATE departments
-        SET national_document = :national_document, name = :name, lastname = :lastname, phone = :phone, email = :email, active = :active, confirmed_email = :confirmed_email, password = :password, created_at = :created_at, updated_at = :updated_at
+        SET  name = :name, created_at = :created_at, updated_at = :updated_at
         WHERE id = :id`,
-        [national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at, id],
+        [name, created_at, updated_at, id],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
       res.json({ message: "Departamento actualizado correctamente" });
@@ -158,23 +158,16 @@ class departmentsController {
     let connection;
     try {
       connection = await getConnection();
-      const query = `INSERT INTO departments (id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at) 
-         VALUES (:id, :national_document, :name, :lastname, :phone, :email, :active, :confirmed_email, :password, :created_at, :updated_at)`;
+      const query = `INSERT INTO departments (id, name, created_at, updated_at) 
+         VALUES (:id, :name, :created_at, :updated_at)`;
 
       for (const rows of data) {
         try {
           const allRows = {
             id: Number(rows._0) || null,
-            national_document: rows._1,
-            name: rows._2,
-            lastname: rows._3,
-            phone: rows._4 ? String(rows._4) : null,
-            email: rows._5 || null,
-            active: Number(rows._6) || 1,
-            confirmed_email: Number(rows._7) || 1,
-            password: rows._8,
-            created_at: rows._9 ? new Date(rows._9) : new Date(),
-            updated_at: rows._10 ? new Date(rows._10) : new Date()
+            name: rows._1,
+            created_at: rows._2 ? new Date(rows._2) : new Date(),
+            updated_at: rows._3 ? new Date(rows._3) : new Date()
           };
           console.log("Insertando datos:", allRows);
           await connection.execute(query, allRows, { autoCommit: true });

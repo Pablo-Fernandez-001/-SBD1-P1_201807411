@@ -9,7 +9,8 @@ class workersController {
   static async getAll(req, res) {
     const connection = await getConnection();
     try {
-      const result = await connection.execute('SELECT * FROM workers',
+      const result = await connection.execute(
+        'SELECT * FROM workers',
       );
 
       if (!result.rows) {
