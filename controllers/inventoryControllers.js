@@ -126,6 +126,54 @@ class inventoryController {
     }
   }
 
+  // BulkLoad
+  static async bulkLoad(req, res) {
+    const results = [];
+    fs.createReadStream(req.file.path)
+      .pipe(csv({ headers: true }))  // Corregido aquí
+      .on('data', (data) => {
+        results.push(data);
+      })
+      .on('end', () => {
+        usersController.insertInventory(results);
+        res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+      })
+      .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
+  }
+
+
+  // functions
+  static async insertInventory(data) {
+    let connection;
+    try {
+      connection = await getConnection();
+      const query = `INSERT INTO inventory (id, product_id, location_id, quantity, created_at, updated_at ) 
+         VALUES (:id, :product_id, :location_id, :quantity, :created_at, :updated_at)`;
+
+      for (const rows of data) {
+        try {
+          const allRows = {
+            id: Number(rows._0) || null,
+            product_id: rows._1,
+            location_id: rows._2,
+            quantity: rows._3,
+            created_at: rows._4 ? new Date(rows._4) : new Date(),
+            updated_at: rows._5 ? new Date(rows._5) : new Date()
+          };
+          console.log("Insertando datos:", allRows);
+          await connection.execute(query, allRows, { autoCommit: true });
+        } catch (error) {
+          console.error("Error al insertar los datos:", error);
+        }
+      }
+
+    } catch (error) {
+      console.error("Error al obtener la conexión:", error);
+    } finally {
+      await connection.close();
+    }
+  }
+
   // Login
   static async login(req, res) {
     const { email, password } = req.body;

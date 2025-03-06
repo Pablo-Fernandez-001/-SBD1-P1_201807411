@@ -108,6 +108,58 @@ class productController {
             await connection.close();
         }
     }
+
+      // BulkLoad
+  static async bulkLoad(req, res) {
+    const results = [];
+    fs.createReadStream(req.file.path)
+      .pipe(csv({ headers: true }))  // Corregido aquí
+      .on('data', (data) => {
+        results.push(data);
+      })
+      .on('end', () => {
+        usersController.insertProducts(results);
+        res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+      })
+      .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
+  }
+
+
+  // functions
+  static async insertProducts(data) {
+    let connection;
+    try {
+      connection = await getConnection();
+      const query = `INSERT INTO products (id, sku, name, description, price, slug, category_id, active, created_at, updated_at) 
+                 VALUES (:id, :sku, :name, :description, :price, :slug, :category_id, :active, :created_at, :updated_at)`;
+
+      for (const rows of data) {
+        try {
+          const allRows = {
+            id: Number(rows._0) || null,
+            sku: rows._1,
+            name: rows._2,
+            description: rows._3,
+            price: rows._4,
+            slug: rows._5 || null,
+            category_id: rows._6,
+            active: rows._7,
+            created_at: rows._8 ? new Date(rows._8) : new Date(),
+            updated_at: rows._9 ? new Date(rows._9) : new Date()
+          };
+          console.log("Insertando datos:", allRows);
+          await connection.execute(query, allRows, { autoCommit: true });
+        } catch (error) {
+          console.error("Error al insertar los datos:", error);
+        }
+      }
+
+    } catch (error) {
+      console.error("Error al obtener la conexión:", error);
+    } finally {
+      await connection.close();
+    }
+  }
 }
 
 module.exports = productController;

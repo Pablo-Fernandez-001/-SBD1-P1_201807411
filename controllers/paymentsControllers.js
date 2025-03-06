@@ -126,6 +126,53 @@ class paymentsController {
         }
     }
 
+    // BulkLoad
+    static async bulkLoad(req, res) {
+        const results = [];
+        fs.createReadStream(req.file.path)
+            .pipe(csv({ headers: true }))  // Corregido aquí
+            .on('data', (data) => {
+                results.push(data);
+            })
+            .on('end', () => {
+                usersController.insertPayments(results);
+                res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+            })
+            .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
+    }
+
+
+    // functions
+    static async insertPayments(data) {
+        let connection;
+        try {
+            connection = await getConnection();
+            const query = `INSERT INTO payments (id, client_id, payment_method, created_at, updated_at) 
+            VALUES (:id, :client_id, :payment_method, :created_at, :updated_at)`;
+
+            for (const rows of data) {
+                try {
+                    const allRows = {
+                        id: Number(rows._0) || null,
+                        client_id: rows._1,
+                        payment_method: rows._2,
+                        created_at: rows._3 ? new Date(rows._3) : new Date(),
+                        updated_at: rows._4 ? new Date(rows._4) : new Date()
+                    };
+                    console.log("Insertando datos:", allRows);
+                    await connection.execute(query, allRows, { autoCommit: true });
+                } catch (error) {
+                    console.error("Error al insertar los datos:", error);
+                }
+            }
+
+        } catch (error) {
+            console.error("Error al obtener la conexión:", error);
+        } finally {
+            await connection.close();
+        }
+    }
+
     // Login
     static async login(req, res) {
         const { email, password } = req.body;

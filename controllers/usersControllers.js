@@ -17,7 +17,7 @@ class usersController {
         return res.status(404).json({ error: "No se encontraron usuarios" });
       }
 
-      console.log("Usuarios obtenidos:", result.rows); // Verifica que los datos sean correctos
+      // console.log("Usuarios obtenidos:", result.rows); // Verifica que los datos sean correctos
       res.json(result.rows); // Solo enviamos `rows`, evitando estructuras circulares
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
