@@ -1,5 +1,11 @@
 const express = require('express');
 const productsDevolutionController = require('../controllers/productsDevolutionControllers');
+const multer = require('multer');
+const fs = require('fs');
+const csv = require('csv-parser');
+
+const app = express();
+const upload = multer({ dest: 'uploads/' });
 
 class ProductsDevolutionRoutes {
     constructor() {

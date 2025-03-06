@@ -1,4 +1,7 @@
 const { getConnection } = require('../db/dbConnection');
+const fs = require('fs');
+const csv = require('csv-parser');
+const oracledb = require('oracledb');
 
 class productController {
 
@@ -118,7 +121,7 @@ class productController {
         results.push(data);
       })
       .on('end', () => {
-        usersController.insertProducts(results);
+        productController.insertProducts(results);
         res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
       })
       .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));

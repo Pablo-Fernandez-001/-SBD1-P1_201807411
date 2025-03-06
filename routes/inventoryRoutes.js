@@ -1,5 +1,11 @@
 const express = require('express');
 const inventoryController = require('../controllers/inventoryControllers');
+const multer = require('multer');
+const fs = require('fs');
+const csv = require('csv-parser');
+
+const app = express();
+const upload = multer({ dest: 'uploads/' });
 
 class InventoryRoutes {
     constructor() {

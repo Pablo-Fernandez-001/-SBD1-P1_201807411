@@ -1,5 +1,11 @@
 const express = require('express');
 const departmentsController = require('../controllers/departmentsControllers');
+const multer = require('multer');
+const fs = require('fs');
+const csv = require('csv-parser');
+
+const app = express();
+const upload = multer({ dest: 'uploads/' });
 
 class DepartmentsRoutes {
     constructor() {
