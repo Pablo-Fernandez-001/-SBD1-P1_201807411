@@ -14,6 +14,7 @@ class MovementsRoutes {
         this.router.put('/:id', movementsController.update);
         this.router.delete('/:id', movementsController.delete);
         this.router.delete('/', movementsController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), movementsController.bulkLoad);
         // this.router.get('/login', movementsController.login);
     }
 }

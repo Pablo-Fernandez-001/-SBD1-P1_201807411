@@ -14,6 +14,7 @@ class CategoriesRoutes {
         this.router.put('/:id', categoriesControllers.update);
         this.router.delete('/:id', categoriesControllers.delete);
         this.router.delete('/', categoriesControllers.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), categoriesControllers.bulkLoad);
     }
 }
 

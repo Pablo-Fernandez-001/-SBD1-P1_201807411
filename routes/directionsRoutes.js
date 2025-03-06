@@ -14,6 +14,7 @@ class DirectionsControllers {
         this.router.put('/:id', directionsControllers.update);
         this.router.delete('/:id', directionsControllers.delete);
         this.router.delete('/', directionsControllers.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), directionsControllers.bulkLoad);
     }
 }
 

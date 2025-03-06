@@ -14,6 +14,7 @@ class DeliveredOrdersRoutes {
         this.router.put('/:id', deliveredOrdersController.update);
         this.router.delete('/:id', deliveredOrdersController.delete);
         this.router.delete('/', deliveredOrdersController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), deliveredOrdersController.bulkLoad);
         // this.router.get('/login', deliveredOrdersController.login);
     }
 }

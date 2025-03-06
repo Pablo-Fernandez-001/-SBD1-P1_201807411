@@ -14,6 +14,7 @@ class ProductsRoutes {
         this.router.put('/:id', productsControllers.update);
         this.router.delete('/:id', productsControllers.delete);
         this.router.delete('/', productsControllers.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), productsControllers.bulkLoad);
     }
 }
 

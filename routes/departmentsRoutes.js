@@ -14,6 +14,7 @@ class DepartmentsRoutes {
         this.router.put('/:id', departmentsController.update);
         this.router.delete('/:id', departmentsController.delete);
         this.router.delete('/', departmentsController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), departmentsController.bulkLoad);
         // this.router.get('/login', departmentsController.login);
     }
 }

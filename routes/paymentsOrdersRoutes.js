@@ -14,6 +14,7 @@ class PaymentsOrdersRoutes {
         this.router.put('/:id', paymentsOrdersController.update);
         this.router.delete('/:id', paymentsOrdersController.delete);
         this.router.delete('/', paymentsOrdersController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), paymentsOrdersController.bulkLoad);
         // this.router.get('/login', paymentsOrdersController.login);
     }
 }

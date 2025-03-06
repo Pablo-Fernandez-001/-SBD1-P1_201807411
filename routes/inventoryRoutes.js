@@ -14,6 +14,7 @@ class InventoryRoutes {
         this.router.put('/:id', inventoryController.update);
         this.router.delete('/:id', inventoryController.delete);
         this.router.delete('/', inventoryController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), inventoryController.bulkLoad);
         // this.router.get('/login', inventoryController.login);
     }
 }

@@ -14,6 +14,7 @@ class OfficesRoutes {
         this.router.put('/:id', officesController.update);
         this.router.delete('/:id', officesController.delete);
         this.router.delete('/', officesController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), officesController.bulkLoad);
         // this.router.get('/login', officesController.login);
     }
 }

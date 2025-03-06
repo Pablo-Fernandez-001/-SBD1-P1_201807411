@@ -14,6 +14,7 @@ class ImagesRoutes {
         this.router.put('/:id', imagesController.update);
         this.router.delete('/:id', imagesController.delete);
         this.router.delete('/', imagesController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), imagesController.bulkLoad);
         // this.router.get('/login', imagesController.login);
     }
 }

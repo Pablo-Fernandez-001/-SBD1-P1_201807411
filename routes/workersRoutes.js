@@ -1,5 +1,5 @@
 const express = require('express');
-const usersController = require('../controllers/usersControllers');
+const workersController = require('../controllers/workersControllers');
 
 class UsersRoutes {
     constructor() {
@@ -8,13 +8,14 @@ class UsersRoutes {
     }
 
     routes() {
-        this.router.get('/', usersController.getAll);
-        this.router.get('/:id', usersController.getOne);
-        this.router.post('/', usersController.store);
-        this.router.put('/:id', usersController.update);
-        this.router.delete('/:id', usersController.delete);
-        this.router.delete('/', usersController.deleteAll);
-        // this.router.get('/login', usersController.login);
+        this.router.get('/', workersController.getAll);
+        this.router.get('/:id', workersController.getOne);
+        this.router.post('/', workersController.store);
+        this.router.put('/:id', workersController.update);
+        this.router.delete('/:id', workersController.delete);
+        this.router.delete('/', workersController.deleteAll);
+        this.router.post('/bulkLoad', upload.single('file'), workersController.bulkLoad);
+        // this.router.get('/login', workersController.login);
     }
 }
 
