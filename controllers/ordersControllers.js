@@ -9,10 +9,18 @@ class ordersController {
   static async getAll(req, res) {
     const connection = await getConnection();
     try {
-      const result = await connection.execute('SELECT * FROM orders');
-      res.json(result.rows);
+      const result = await connection.execute('SELECT * FROM orders',
+      );
+
+      if (!result.rows) {
+        return res.status(404).json({ error: "No se encontraron usuarios" });
+      }
+
+      console.log("Usuarios obtenidos:", result.rows); // Verifica que los datos sean correctos
+      res.json(result.rows); // Solo enviamos `rows`, evitando estructuras circulares
     } catch (error) {
-      res.status(500).json({ error: "Error al obtener usuarios" });
+      console.error("Error al obtener usuarios:", error);
+      res.status(500).json({ error: "Error al obtener usuarios: " + error.message });
     } finally {
       await connection.close();
     }
