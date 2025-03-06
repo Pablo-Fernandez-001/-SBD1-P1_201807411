@@ -14,7 +14,7 @@ DROP TABLE clients CASCADE CONSTRAINTS;                 -- X
 DROP TABLE offices CASCADE CONSTRAINTS;                 -- X
 DROP TABLE departments CASCADE CONSTRAINTS;             -- X
 DROP TABLE workers CASCADE CONSTRAINTS;                 -- X
-DROP TABLE products CASCADE CONSTRAINTS;                -- NO
+DROP TABLE products CASCADE CONSTRAINTS;                -- X
 DROP TABLE categories CASCADE CONSTRAINTS;              -- X
 
 -- Crear tablas
@@ -70,11 +70,11 @@ CREATE TABLE workers (
 
 CREATE TABLE products (
     id NUMBER PRIMARY KEY,
-    sku VARCHAR2(100) UNIQUE NOT NULL,
+    sku VARCHAR2(100) NOT NULL,
     name VARCHAR2(255) NOT NULL,
-    description CLOB,
+    description VARCHAR2(510),
     price NUMBER NOT NULL,
-    slug VARCHAR2(255) UNIQUE NOT NULL,
+    slug VARCHAR2(255) NOT NULL,
     category_id NUMBER REFERENCES categories(id) ON DELETE SET NULL,
     active NUMBER(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

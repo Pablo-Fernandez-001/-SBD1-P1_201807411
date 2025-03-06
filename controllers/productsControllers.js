@@ -17,6 +17,7 @@ class productController {
 
       console.log("Usuarios obtenidos:", result.rows); // Verifica que los datos sean correctos
       res.json(result.rows); // Solo enviamos `rows`, evitando estructuras circulares
+      // res.status(200).json({message: "getted"});
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
       res.status(500).json({ error: "Error al obtener usuarios: " + error.message });
@@ -159,14 +160,14 @@ class productController {
       for (const rows of data) {
         try {
           const allRows = {
-            id: Number(rows._0) || null,
+            id: Number(rows._0),
             sku: rows._1,
             name: rows._2,
             description: rows._3,
             price: rows._4,
-            slug: rows._5 || null,
+            slug: rows._5,
             category_id: rows._6,
-            active: rows._7.toLowerCase=='true'?1:0,
+            active: rows._7.toLowerCase() == 'true' ? 1 : 0,
             created_at: rows._8 ? new Date(rows._8) : new Date(),
             updated_at: rows._9 ? new Date(rows._9) : new Date()
           };
