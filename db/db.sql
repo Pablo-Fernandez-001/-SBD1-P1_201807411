@@ -4,12 +4,12 @@ DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X
 DROP TABLE images CASCADE CONSTRAINTS;                  -- NO
 DROP TABLE products_movements CASCADE CONSTRAINTS;      -- X
 DROP TABLE movements CASCADE CONSTRAINTS;               -- X
-DROP TABLE inventory CASCADE CONSTRAINTS;               -- NO
+DROP TABLE inventory CASCADE CONSTRAINTS;               -- X
 DROP TABLE payments_orders CASCADE CONSTRAINTS;         -- X
 DROP TABLE products_orders CASCADE CONSTRAINTS;         -- X
 DROP TABLE orders CASCADE CONSTRAINTS;                  -- X
 DROP TABLE directions CASCADE CONSTRAINTS;              -- X
-DROP TABLE payments CASCADE CONSTRAINTS;                -- NO
+DROP TABLE payments CASCADE CONSTRAINTS;                -- X
 DROP TABLE clients CASCADE CONSTRAINTS;                 -- X
 DROP TABLE offices CASCADE CONSTRAINTS;                 -- X
 DROP TABLE departments CASCADE CONSTRAINTS;             -- X
