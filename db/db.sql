@@ -84,7 +84,7 @@ CREATE TABLE products (
 CREATE TABLE payments (
     id NUMBER PRIMARY KEY,
     client_id NUMBER REFERENCES clients(id) ON DELETE CASCADE,
-    payment_method VARCHAR2(100),
+    payment_method VARCHAR2(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
