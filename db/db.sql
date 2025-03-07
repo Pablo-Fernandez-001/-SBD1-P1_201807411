@@ -1,7 +1,7 @@
 -- Eliminar tablas existentes
 DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- X
 DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X
-DROP TABLE images CASCADE CONSTRAINTS;                  -- NO
+DROP TABLE images CASCADE CONSTRAINTS;                  -- X
 DROP TABLE products_movements CASCADE CONSTRAINTS;      -- X
 DROP TABLE movements CASCADE CONSTRAINTS;               -- X
 DROP TABLE inventory CASCADE CONSTRAINTS;               -- X
