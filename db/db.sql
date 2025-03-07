@@ -1,12 +1,12 @@
 -- Eliminar tablas existentes
-DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- NO
+DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- X
 DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X
 DROP TABLE images CASCADE CONSTRAINTS;                  -- NO
-DROP TABLE products_movements CASCADE CONSTRAINTS;      -- NO
-DROP TABLE movements CASCADE CONSTRAINTS;               -- NO
+DROP TABLE products_movements CASCADE CONSTRAINTS;      -- X
+DROP TABLE movements CASCADE CONSTRAINTS;               -- X
 DROP TABLE inventory CASCADE CONSTRAINTS;               -- NO
 DROP TABLE payments_orders CASCADE CONSTRAINTS;         -- X
-DROP TABLE products_orders CASCADE CONSTRAINTS;         -- NO
+DROP TABLE products_orders CASCADE CONSTRAINTS;         -- X
 DROP TABLE orders CASCADE CONSTRAINTS;                  -- X
 DROP TABLE directions CASCADE CONSTRAINTS;              -- X
 DROP TABLE payments CASCADE CONSTRAINTS;                -- NO
@@ -110,7 +110,7 @@ CREATE TABLE products_orders (
     order_id NUMBER REFERENCES orders(id) ON DELETE CASCADE,
     product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
     quantity NUMBER NOT NULL,
-    price NUMBER(10,2) NOT NULL,
+    price NUMBER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -138,7 +138,7 @@ CREATE TABLE movements (
     location_origin_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     location_dest_id NUMBER REFERENCES offices(id) ON DELETE SET NULL,
     status VARCHAR2(250),
-    estimate_arrive_date DATE,
+    estimate_arrive_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -176,7 +176,7 @@ CREATE TABLE delivered_orders (
 CREATE TABLE products_devolution (
     id NUMBER PRIMARY KEY,
     product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
-    description CLOB,
+    description VARCHAR2(510),
     status VARCHAR2(50),
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

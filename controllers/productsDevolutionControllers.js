@@ -165,11 +165,11 @@ class productsDevolutionController {
         for (const rows of data) {
           try {
             const allRows = {
-              id: Number(rows._0) || null,
+              id: Number(rows._0),
               product_id: rows._1,
               description: rows._2,
               status: rows._3,
-              requested_at: rows._4,
+              requested_at: rows._4 ? new Date(rows._4) : new Date(),
               created_at: rows._5 ? new Date(rows._5) : new Date(),
               updated_at: rows._6 ? new Date(rows._6) : new Date()
             };

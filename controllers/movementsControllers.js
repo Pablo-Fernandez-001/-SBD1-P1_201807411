@@ -168,8 +168,8 @@ class movementsController {
             location_origin_id: rows._1,
             location_dest_id: rows._2,
             status: rows._3,
-            estimate_arrive_date: rows._4,
-            requested_at: rows._5,
+            estimate_arrive_date: rows._4 ? new Date(rows._4) : new Date(),
+            requested_at: rows._5 ? new Date(rows._5) : new Date(),
             created_at: rows._6 ? new Date(rows._6) : new Date(),
             updated_at: rows._7 ? new Date(rows._7) : new Date()
           };

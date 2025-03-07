@@ -11,20 +11,20 @@ class paymentsController {
         try {
             const result = await connection.execute('SELECT * FROM payments',
             );
-      
+
             if (!result.rows) {
-              return res.status(404).json({ error: "No se encontraron usuarios" });
+                return res.status(404).json({ error: "No se encontraron usuarios" });
             }
-      
+
             console.log("Usuarios obtenidos:", result.rows); // Verifica que los datos sean correctos
             res.json(result.rows); // Solo enviamos `rows`, evitando estructuras circulares
-          } catch (error) {
+        } catch (error) {
             console.error("Error al obtener usuarios:", error);
             res.status(500).json({ error: "Error al obtener usuarios: " + error.message });
-          } finally {
+        } finally {
             await connection.close();
-          }
         }
+    }
 
     // Obtener un usuario por ID
     static async getOne(req, res) {
@@ -164,14 +164,14 @@ class paymentsController {
             for (const rows of data) {
                 try {
                     const allRows = {
-                        id: Number(rows._0) || null,
+                        id: Number(rows._0),
                         client_id: rows._1,
-                        payment_method: rows._2,
+                        payment_method: rows._2.toLowerCase(),
                         created_at: rows._3 ? new Date(rows._3) : new Date(),
                         updated_at: rows._4 ? new Date(rows._4) : new Date()
                     };
                     console.log("Insertando datos:", allRows);
-                    await connection.execute(query, allRows, { autoCommit: true });
+                    // await connection.execute(query, allRows, { autoCommit: true });
                 } catch (error) {
                     console.error("Error al insertar los datos:", error);
                 }
