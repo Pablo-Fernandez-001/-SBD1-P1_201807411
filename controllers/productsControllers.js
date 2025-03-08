@@ -46,6 +46,8 @@ class productController {
     const connection = await getConnection();
     try {
       const { id, sku, name, description, price, slug, category_id, active, created_at, updated_at } = req.body;
+      created_at = created_at ? new Date(created_at) : new Date();
+      updated_at = updated_at ? new Date(updated_at) : new Date();
       if (!req.body) {
         return res.status(400).json({ error: "Faltan datos" });
       }
@@ -75,18 +77,13 @@ class productController {
     const { id } = req.params;
     const { sku, name, description, price, slug, category_id, active, created_at, updated_at } = req.body;
     const connection = await getConnection();
-    if (!created_at) {
-      created_at = new Date();
-    }
+    created_at = created_at ? new Date(created_at) : new Date();
+    updated_at = updated_at ? new Date(updated_at) : new Date();
     if (active.toLowerCase() == 'true') {
       active = 1;
     }
     else if (active.toLowerCase() == 'false') {
       active = 0;
-    }
-
-    if (!updated_at) {
-      updated_at = new Date();
     }
     try {
       await connection.execute(

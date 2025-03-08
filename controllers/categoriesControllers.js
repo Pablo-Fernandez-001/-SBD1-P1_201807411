@@ -48,13 +48,8 @@ class categoriesController {
     const connection = await getConnection();
     try {
       const { id, name, created_at, updated_at } = req.body;
-      if(!created_at){
-        created_at = new Date();
-      }
-
-      if(!updated_at){
-        updated_at = new Date();
-      }
+      created_at = created_at ? new Date(created_at) : new Date();
+      updated_at = updated_at ? new Date(updated_at) : new Date();
 
       console.log(req.body);
       if (!req.body) {
@@ -64,7 +59,7 @@ class categoriesController {
       await connection.execute(
         `INSERT INTO categories (id, name, created_at, updated_at) 
          VALUES (:id, :name, :created_at, :updated_at)`,
-        [id, name, created_at, updated_at],
+        [id, name, new created_at, updated_at],
         { autoCommit: true } // Asegúrate de que esto esté aquí
       );
       res.json({ message: "Usuario insertado correctamente", user: { id, name, created_at, updated_at } });
@@ -82,13 +77,8 @@ class categoriesController {
     const { id } = req.params;
     const {name, created_at, updated_at } = req.body;
     const connection = await getConnection();
-    if(!created_at){
-      created_at = new Date();
-    }
-
-    if(!updated_at){
-      updated_at = new Date();
-    }
+    created_at = created_at ? new Date(created_at) : new Date();
+    updated_at = updated_at ? new Date(updated_at) : new Date();
 
     try {
       await connection.execute(
