@@ -77,7 +77,7 @@ class inventoryController {
     const { id } = req.params;
     const { product_id, location_id, quantity, created_at, updated_at  } = req.body;
     const connection = await getConnection();
-    created_at = created_at ? new Date(created_at) : new Date();
+    created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
 
     try {

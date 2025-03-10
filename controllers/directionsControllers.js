@@ -77,7 +77,7 @@ class directionsController {
     const { id } = req.params;
     const {client_id, address, created_at, updated_at } = req.body;
     const connection = await getConnection();
-    created_at = created_at ? new Date(created_at) : new Date();
+    created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
     try {
       await connection.execute(

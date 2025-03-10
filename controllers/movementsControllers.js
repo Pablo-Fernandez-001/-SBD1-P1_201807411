@@ -77,7 +77,7 @@ class movementsController {
     const { id } = req.params;
     const { location_origin_id, location_dest_id, status, estimate_arrive_date, requested_at, created_at, updated_at } = req.body;
     const connection = await getConnection();
-    created_at = created_at ? new Date(created_at) : new Date();
+    created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
 
     try {

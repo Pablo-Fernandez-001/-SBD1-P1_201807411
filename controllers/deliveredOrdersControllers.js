@@ -77,7 +77,7 @@ class deliveredOrdersController {
     const { id } = req.params;
     let { order_id, company, address, number_company_guide, status, delivered_at, created_at, updated_at } = req.body;
     const connection = await getConnection();
-    created_at = created_at ? new Date(created_at) : new Date();
+    created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
 
     try {
