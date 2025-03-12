@@ -159,7 +159,7 @@ class officesController {
             created_at: rows._2 ? new Date(rows._2) : new Date(),
             updated_at: rows._3 ? new Date(rows._3) : new Date()
           };
-          console.log("Insertando datos:", allRows);
+          // console.log("Insertando datos:", allRows);
           await connection.execute(query, allRows, { autoCommit: true });
         } catch (error) {
           console.error("Error al insertar los datos:", error);

@@ -162,7 +162,7 @@ class productsDevolutionController {
               created_at: rows._5 ? new Date(rows._5) : new Date(),
               updated_at: rows._6 ? new Date(rows._6) : new Date()
             };
-            console.log("Insertando datos:", allRows);
+            // console.log("Insertando datos:", allRows);
             await connection.execute(query, allRows, { autoCommit: true });
           } catch (error) {
             console.error("Error al insertar los datos:", error);

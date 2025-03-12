@@ -168,7 +168,7 @@ class usersController {
             created_at: rows._9 ? new Date(rows._9) : new Date(),
             updated_at: rows._10 ? new Date(rows._10) : new Date()
           };
-          console.log("Insertando datos:", allRows);
+          // console.log("Insertando datos:", allRows);
           await connection.execute(query, allRows, { autoCommit: true });
         } catch (error) {
           console.error("Error al insertar los datos:", error);

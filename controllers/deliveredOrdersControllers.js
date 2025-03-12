@@ -165,7 +165,7 @@ class deliveredOrdersController {
             created_at: rows._7 ? new Date(rows._7) : new Date(),
             updated_at: rows._8 ? new Date(rows._8) : new Date()
           };
-          console.log("Insertando datos:", allRows);
+          // console.log("Insertando datos:", allRows);
           await connection.execute(query, allRows, { autoCommit: true });
         } catch (error) {
           console.error("Error al insertar los datos:", error);

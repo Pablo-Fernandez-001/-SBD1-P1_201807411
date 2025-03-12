@@ -1,21 +1,21 @@
 -- Eliminar tablas existentes
-DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- X
-DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X
-DROP TABLE images CASCADE CONSTRAINTS;                  -- X
-DROP TABLE products_movements CASCADE CONSTRAINTS;      -- X
-DROP TABLE movements CASCADE CONSTRAINTS;               -- X
-DROP TABLE inventory CASCADE CONSTRAINTS;               -- X
-DROP TABLE payments_orders CASCADE CONSTRAINTS;         -- X
-DROP TABLE products_orders CASCADE CONSTRAINTS;         -- X
-DROP TABLE orders CASCADE CONSTRAINTS;                  -- X
-DROP TABLE directions CASCADE CONSTRAINTS;              -- X
-DROP TABLE payments CASCADE CONSTRAINTS;                -- X
-DROP TABLE clients CASCADE CONSTRAINTS;                 -- X
-DROP TABLE offices CASCADE CONSTRAINTS;                 -- X
-DROP TABLE departments CASCADE CONSTRAINTS;             -- X
-DROP TABLE workers CASCADE CONSTRAINTS;                 -- X
-DROP TABLE products CASCADE CONSTRAINTS;                -- X
-DROP TABLE categories CASCADE CONSTRAINTS;              -- X
+DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- X -- 16
+DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X -- 
+DROP TABLE images CASCADE CONSTRAINTS;                  -- X -- 12
+DROP TABLE products_movements CASCADE CONSTRAINTS;      -- X -- 15
+DROP TABLE movements CASCADE CONSTRAINTS;               -- X -- 11
+DROP TABLE inventory CASCADE CONSTRAINTS;               -- X -- 10 
+DROP TABLE payments_orders CASCADE CONSTRAINTS;         -- X -- 14
+DROP TABLE products_orders CASCADE CONSTRAINTS;         -- X -- 13
+DROP TABLE orders CASCADE CONSTRAINTS;                  -- X -- 9
+DROP TABLE directions CASCADE CONSTRAINTS;              -- X -- 8
+DROP TABLE payments CASCADE CONSTRAINTS;                -- X -- 7
+DROP TABLE clients CASCADE CONSTRAINTS;                 -- X -- 1
+DROP TABLE offices CASCADE CONSTRAINTS;                 -- X -- 4
+DROP TABLE departments CASCADE CONSTRAINTS;             -- X -- 3
+DROP TABLE workers CASCADE CONSTRAINTS;                 -- X -- 5
+DROP TABLE products CASCADE CONSTRAINTS;                -- X -- 6
+DROP TABLE categories CASCADE CONSTRAINTS;              -- X -- 2
 
 -- Crear tablas
 CREATE TABLE categories (

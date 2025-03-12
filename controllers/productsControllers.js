@@ -168,7 +168,7 @@ class productController {
             created_at: rows._8 ? new Date(rows._8) : new Date(),
             updated_at: rows._9 ? new Date(rows._9) : new Date()
           };
-          console.log("Insertando datos:", allRows);
+          // console.log("Insertando datos:", allRows);
           await connection.execute(query, allRows, { autoCommit: true });
         } catch (error) {
           console.error("Error al insertar los datos:", error);
