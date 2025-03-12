@@ -161,7 +161,7 @@ class deliveredOrdersController {
             address: rows._3,
             number_company_guide: rows._4,
             status: rows._5 || null,
-            delivered_at: rows._6,
+            delivered_at: rows._6 ? new Date(rows._6) : new Date(),
             created_at: rows._7 ? new Date(rows._7) : new Date(),
             updated_at: rows._8 ? new Date(rows._8) : new Date()
           };
