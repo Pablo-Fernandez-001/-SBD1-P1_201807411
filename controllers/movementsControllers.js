@@ -48,6 +48,8 @@ class movementsController {
     const connection = await getConnection();
     try {
       const { id, location_origin_id, location_dest_id, status, estimate_arrive_date, requested_at, created_at, updated_at } = req.body;
+      estimate_arrive_date  = estimate_arrive_date ? new Date(estimate_arrive_date) : new Date();
+      requested_at = requested_at ? new Date(requested_at) : new Date();
       created_at = created_at ? new Date(created_at) : new Date();
       updated_at = updated_at ? new Date(updated_at) : new Date();
 
@@ -77,6 +79,8 @@ class movementsController {
     const { id } = req.params;
     const { location_origin_id, location_dest_id, status, estimate_arrive_date, requested_at, created_at, updated_at } = req.body;
     const connection = await getConnection();
+    estimate_arrive_date = estimate_arrive_date ? new Date(estimate_arrive_date) : new Date();
+    requested_at = requested_at ? new Date(requested_at) : new Date();
     created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
 
@@ -138,6 +142,7 @@ class movementsController {
       .on('end', () => {
         movementsController.insertMovements(results);
         res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+        console.log("Datos cargados:", results); // Verifica que los datos sean correctos
       })
       .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
   }

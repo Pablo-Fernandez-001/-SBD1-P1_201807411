@@ -48,14 +48,9 @@ class productController {
       const { id, sku, name, description, price, slug, category_id, active, created_at, updated_at } = req.body;
       created_at = created_at ? new Date(created_at) : new Date();
       updated_at = updated_at ? new Date(updated_at) : new Date();
+      active = active.toLowerCase() === "true" ? 1 : 0;
       if (!req.body) {
         return res.status(400).json({ error: "Faltan datos" });
-      }
-      if (active.toLowerCase() == 'true') {
-        active = 1;
-      }
-      else if (active.toLowerCase() == 'false') {
-        active = 0;
       }
       await connection.execute(
         `INSERT INTO products (id, sku, name, description, price, slug, category_id, active, created_at, updated_at) 
@@ -79,12 +74,7 @@ class productController {
     const connection = await getConnection();
     created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
-    if (active.toLowerCase() == 'true') {
-      active = 1;
-    }
-    else if (active.toLowerCase() == 'false') {
-      active = 0;
-    }
+    active = active.toLowerCase() === "true" ? 1 : 0;
     try {
       await connection.execute(
         `UPDATE products SET sku = :sku, name = :name, description = :description, price = :price, slug = :slug, category_id = :category_id, active = :active, created_at = :created_at, updated_at = :updated_at WHERE id = :id`,
@@ -141,6 +131,7 @@ class productController {
       .on('end', () => {
         productController.insertProducts(results);
         res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+        console.log("Datos cargados:", results); // Verifica que los datos sean correctos
       })
       .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
   }

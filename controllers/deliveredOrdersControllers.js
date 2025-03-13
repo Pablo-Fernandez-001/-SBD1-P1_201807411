@@ -48,6 +48,7 @@ class deliveredOrdersController {
     const connection = await getConnection();
     try {
       let { id, order_id, company, address, number_company_guide, status, delivered_at, created_at, updated_at } = req.body;
+      delivered_at = delivered_at ? new Date(delivered_at) : new Date();
       created_at = created_at ? new Date(created_at) : new Date();
       updated_at = updated_at ? new Date(updated_at) : new Date();
 
@@ -77,6 +78,7 @@ class deliveredOrdersController {
     const { id } = req.params;
     let { order_id, company, address, number_company_guide, status, delivered_at, created_at, updated_at } = req.body;
     const connection = await getConnection();
+    delivered_at = delivered_at ? new Date(delivered_at) : delivered_at;
     created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
 
@@ -138,6 +140,7 @@ class deliveredOrdersController {
       .on('end', () => {
         deliveredOrdersController.insertClients(results);
         res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+        console.log("Datos cargados:", results); // Verifica que los datos sean correctos
       })
       .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
   }

@@ -138,6 +138,7 @@ class officesController {
       .on('end', () => {
         officesController.insertOffices(results);
         res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+        console.log("Datos cargados:", results); // Verifica que los datos sean correctos
       })
       .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
   }

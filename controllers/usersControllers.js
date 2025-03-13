@@ -51,6 +51,7 @@ class usersController {
       let { id, national_document, name, lastname, phone, email, active, confirmed_email, password, created_at, updated_at } = req.body;
       created_at = created_at ? new Date(created_at) : new Date();
       updated_at = updated_at ? new Date(updated_at) : new Date();
+      active = active.toLowerCase() === "true" ? 1 : 0;
 
       console.log(req.body);
       if (!req.body) {
@@ -81,6 +82,7 @@ class usersController {
     const connection = await getConnection();
     created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
+    active.toLowerCase() = "true" ? 1 : 0;
 
     try {
       await connection.execute(
@@ -140,6 +142,7 @@ class usersController {
       .on('end', () => {
         usersController.insertClients(results);
         res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+        console.log("Datos cargados:", results); // Verifica que los datos sean correctos
       })
       .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
   }

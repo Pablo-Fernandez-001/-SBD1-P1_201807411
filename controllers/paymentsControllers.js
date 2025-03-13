@@ -43,56 +43,89 @@ class paymentsController {
         }
     }
 
-    // insertar un usuario
+    // Insertar un usuario
     static async store(req, res) {
-        const connection = await getConnection();
+        let connection;
         try {
-            const { id, client_id, payment_method, created_at, updated_at } = req.body;
+            connection = await getConnection();
+            let { id, client_id, payment_method, created_at, updated_at } = req.body;
             created_at = created_at ? new Date(created_at) : new Date();
             updated_at = updated_at ? new Date(updated_at) : new Date();
 
-            console.log(req.body);
-            if (!req.body) {
-                return res.status(400).json({ error: "Faltan datos" });
-
+            let PaymentMethodId = 0;
+            const searchPaymentMethod = await connection.execute('SELECT id FROM payment_methods WHERE method = :payment_method', [payment_method]);
+            
+            if (searchPaymentMethod.rows.length === 0) {
+                const result = await connection.execute(`SELECT COUNT(*) AS total FROM payment_methods`);
+                const total = result.rows[0][0];
+                PaymentMethodId = total + 1;
+                
+                await connection.execute(
+                    `INSERT INTO payment_methods (id, method, created_at, updated_at) 
+                    VALUES (:id, :method, :created_at, :updated_at)`,
+                    [PaymentMethodId, payment_method, created_at, updated_at],
+                    { autoCommit: true }
+                );
+            } else {
+                PaymentMethodId = searchPaymentMethod.rows[0][0];
             }
+
             await connection.execute(
-                `INSERT INTO payments (id, client_id, payment_method, created_at, updated_at) 
-         VALUES (:id, :client_id, :payment_method, :created_at, :updated_at)`,
-                [id, client_id, payment_method, created_at, updated_at],
-                { autoCommit: true } // Asegúrate de que esto esté aquí
+                `INSERT INTO payments (id, client_id, payment_method_id, created_at, updated_at) 
+                VALUES (:id, :client_id, :payment_method_id, :created_at, :updated_at)`,
+                [id, client_id, PaymentMethodId, created_at, updated_at],
+                { autoCommit: true }
             );
-            res.json({ message: "Usuario insertado correctamente", user: { id, client_id, payment_method, created_at, updated_at } });
+            res.json({ message: "Pago insertado correctamente" });
         } catch (error) {
             console.error("Error en la inserción:", error);
             res.status(500).json({ error: "Error al insertar el Pago" });
-        }
-        finally {
-            await connection.close();
+        } finally {
+            if (connection) await connection.close();
         }
     }
 
     // Actualizar un usuario
     static async update(req, res) {
         const { id } = req.params;
-        const { client_id, payment_method, created_at, updated_at } = req.body;
-        const connection = await getConnection();
+        let { client_id, payment_method, created_at, updated_at } = req.body;
         created_at = created_at ? new Date(created_at) : created_at;
         updated_at = updated_at ? new Date(updated_at) : new Date();
-
+        
+        let connection;
         try {
+            connection = await getConnection();
+            
+            let PaymentMethodId = 0;
+            const searchPaymentMethod = await connection.execute('SELECT id FROM payment_methods WHERE method = :payment_method', [payment_method]);
+            
+            if (searchPaymentMethod.rows.length === 0) {
+                const result = await connection.execute(`SELECT COUNT(*) AS total FROM payment_methods`);
+                const total = result.rows[0][0];
+                PaymentMethodId = total + 1;
+                
+                await connection.execute(
+                    `INSERT INTO payment_methods (id, method, created_at, updated_at) 
+                    VALUES (:id, :method, :created_at, :updated_at)`,
+                    [PaymentMethodId, payment_method, created_at, updated_at],
+                    { autoCommit: true }
+                );
+            } else {
+                PaymentMethodId = searchPaymentMethod.rows[0][0];
+            }
+
             await connection.execute(
-                `UPDATE payments
-        SET client_id= :client_id, payment_method= :payment_method, created_at= :created_at, updated_at= :updated_at
-        WHERE id = :id`,
-                [client_id, payment_method, created_at, updated_at, id],
-                { autoCommit: true } // Asegúrate de que esto esté aquí
+                `UPDATE payments SET client_id= :client_id, payment_method_id= :payment_method_id, created_at= :created_at, updated_at= :updated_at 
+                WHERE id = :id`,
+                [client_id, PaymentMethodId, created_at, updated_at, id],
+                { autoCommit: true }
             );
-            res.json({ message: "Usuario actualizado correctamente" });
+            res.json({ message: "Pago actualizado correctamente" });
         } catch (error) {
-            res.status(500).json({ error: "Error al actualizar el Pa" });
+            console.error("Error al actualizar el pago:", error);
+            res.status(500).json({ error: "Error al actualizar el Pago" });
         } finally {
-            await connection.close();
+            if (connection) await connection.close();
         }
     }
 
@@ -138,6 +171,7 @@ class paymentsController {
             .on('end', () => {
                 paymentsController.insertPayments(results);
                 res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+                console.log("Datos cargados:", results); // Verifica que los datos sean correctos
             })
             .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
     }
@@ -148,11 +182,10 @@ class paymentsController {
         let connection;
         try {
             connection = await getConnection();
-            const query = `INSERT INTO payments (id, client_id, payment_method, created_at, updated_at) 
-            VALUES (:id, :client_id, :payment_method, :created_at, :updated_at)`;
+            const query = `INSERT INTO payments (id, client_id, payment_method_id, created_at, updated_at) 
+            VALUES (:id, :client_id, :payment_method_id, :created_at, :updated_at)`;
 
             for (const rows of data) {
-                console.log("Rows: ", rows);
                 try {
                     const allRows = {
                         id: Number(rows._0),
@@ -161,8 +194,47 @@ class paymentsController {
                         created_at: rows._3 ? new Date(rows._3) : new Date(),
                         updated_at: rows._4 ? new Date(rows._4) : new Date()
                     };
+
+                    const searchPaymentMethod = await connection.execute('SELECT * FROM payment_methods WHERE method = :payment_method', [allRows.payment_method]);
+
+                    if (searchPaymentMethod.rows.length === 0) {
+                        // insertar payment_method en la base de datos;
+
+                        const result = await connection.execute(`SELECT COUNT(*) AS total FROM payment_methods`);
+                        const total = result.rows[0][0];
+                        const newId = total + 1;
+
+                        await connection.execute(
+                            `INSERT INTO payment_methods ( id, method, created_at, updated_at ) 
+                            VALUES (:id, :method, :created_at, :updated_at)`,
+                            [newId, allRows.payment_method, allRows.created_at, allRows.updated_at],
+                            { autoCommit: true } // Asegúrate de que esto esté aquí
+                        );
+                    }
+
+                    let PaymentMethodId = 0;
+                    const result = await connection.execute(
+                        `SELECT id FROM payment_methods WHERE method = :method`,
+                        [allRows.payment_method]
+                    );
+
+                    if (result.rows.length > 0) {
+                        const paymentMethodId = result.rows[0][0]; // Extraer el ID
+                        PaymentMethodId = paymentMethodId;
+                        // console.log("ID encontrado:", paymentMethodId);
+                    }
+
+                    const payment_data = {
+                        id: allRows.id,
+                        client_id: allRows.client_id,
+                        payment_method_id: PaymentMethodId,
+                        created_at: allRows.created_at,
+                        updated_at: allRows.updated_at
+                    }
+
+                    // console.log("Payment Data: ", payment_data);
                     // console.log("Insertando datos:", allRows);
-                    await connection.execute(query, allRows, { autoCommit: true });
+                    await connection.execute(query, payment_data, { autoCommit: true });
                 } catch (error) {
                     console.error("Error al insertar los datos:", error);
                 }

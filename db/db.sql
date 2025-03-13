@@ -1,15 +1,16 @@
 -- Eliminar tablas existentes
 DROP TABLE products_devolution CASCADE CONSTRAINTS;     -- X -- 16
-DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X -- 
+DROP TABLE delivered_orders CASCADE CONSTRAINTS;        -- X -- 17
 DROP TABLE images CASCADE CONSTRAINTS;                  -- X -- 12
 DROP TABLE products_movements CASCADE CONSTRAINTS;      -- X -- 15
 DROP TABLE movements CASCADE CONSTRAINTS;               -- X -- 11
 DROP TABLE inventory CASCADE CONSTRAINTS;               -- X -- 10 
 DROP TABLE payments_orders CASCADE CONSTRAINTS;         -- X -- 14
+DROP TABLE payment_methods CASCADE CONSTRAINTS;         -- X -- 18
+DROP TABLE payments CASCADE CONSTRAINTS;                -- X -- 7
 DROP TABLE products_orders CASCADE CONSTRAINTS;         -- X -- 13
 DROP TABLE orders CASCADE CONSTRAINTS;                  -- X -- 9
 DROP TABLE directions CASCADE CONSTRAINTS;              -- X -- 8
-DROP TABLE payments CASCADE CONSTRAINTS;                -- X -- 7
 DROP TABLE clients CASCADE CONSTRAINTS;                 -- X -- 1
 DROP TABLE offices CASCADE CONSTRAINTS;                 -- X -- 4
 DROP TABLE departments CASCADE CONSTRAINTS;             -- X -- 3
@@ -17,7 +18,7 @@ DROP TABLE workers CASCADE CONSTRAINTS;                 -- X -- 5
 DROP TABLE products CASCADE CONSTRAINTS;                -- X -- 6
 DROP TABLE categories CASCADE CONSTRAINTS;              -- X -- 2
 
--- Crear tablas
+-- Empezando a normalizar:
 CREATE TABLE categories (
     id NUMBER PRIMARY KEY,
     name VARCHAR2(255) NOT NULL,
@@ -81,10 +82,26 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE payment_methods (
+    id NUMBER PRIMARY KEY,
+    method VARCHAR2(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE payments (
     id NUMBER PRIMARY KEY,
     client_id NUMBER REFERENCES clients(id) ON DELETE CASCADE,
-    payment_method VARCHAR2(255),
+    payment_method_id NUMBER REFERENCES payment_methods(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE payments_orders (
+    id NUMBER PRIMARY KEY,
+    order_id NUMBER REFERENCES orders(id) ON DELETE CASCADE,
+    payment_method_id NUMBER REFERENCES payment_methods(id) ON DELETE SET NULL,
+    status VARCHAR2(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -111,15 +128,6 @@ CREATE TABLE products_orders (
     product_id NUMBER REFERENCES products(id) ON DELETE CASCADE,
     quantity NUMBER NOT NULL,
     price NUMBER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE payments_orders (
-    id NUMBER PRIMARY KEY,
-    order_id NUMBER REFERENCES orders(id) ON DELETE CASCADE,
-    payment_method VARCHAR2(100),
-    status VARCHAR2(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -187,13 +195,14 @@ CREATE TABLE products_devolution (
 SELECT * FROM categories;
 SELECT * FROM clients;
 SELECT * FROM payments;
+SELECT * FROM payment_methods;
+SELECT * FROM payments_orders;
 SELECT * FROM directions;
 SELECT * FROM workers;
 SELECT * FROM departments;
 SELECT * FROM offices;
 SELECT * FROM orders;
 SELECT * FROM products_orders;
-SELECT * FROM payments_orders;
 SELECT * FROM inventory;
 SELECT * FROM products_movements;
 SELECT * FROM products;

@@ -51,6 +51,7 @@ class workersController {
       const { id, national_document, name, lastname, job, department_id, phone, email, location_id, active, created_at, updated_at } = req.body;
       created_at = created_at ? new Date(created_at) : new Date();
       updated_at = updated_at ? new Date(updated_at) : new Date();
+      active = active.toLowerCase() === "true" ? 1 : 0;
 
       console.log(req.body);
       if (!req.body) {
@@ -78,6 +79,7 @@ class workersController {
     const { id } = req.params;
     const { national_document, name, lastname, job, department_id, phone, email, location_id, active, created_at, updated_at } = req.body;
     const connection = await getConnection();
+    active = active.toLowerCase() === "true" ? 1 : 0;
     created_at = created_at ? new Date(created_at) : created_at;
     updated_at = updated_at ? new Date(updated_at) : new Date();
 
@@ -139,6 +141,7 @@ class workersController {
         .on('end', () => {
           workersController.insertWorkers(results);
           res.json({ data: results });  // Aquí estaba 'req.json', debe ser 'res.json'
+          console.log("Datos cargados:", results); // Verifica que los datos sean correctos
         })
         .on('error', (error) => res.status(500).json({ error: "Error al cargar el archivo" }));
     }
@@ -164,7 +167,7 @@ class workersController {
               phone: rows._6,
               email: rows._7 || null,
               location_id: rows._8 || null,
-              active: Number(rows._9) || 1,
+              active: rows._9.toLowerCase() === "true" ? 1 : 0,
               created_at: rows._10 ? new Date(rows._10) : new Date(),
               updated_at: rows._11 ? new Date(rows._11) : new Date()
             };
