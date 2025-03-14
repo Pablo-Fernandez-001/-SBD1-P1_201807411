@@ -17,6 +17,7 @@ class DirectionsControllers {
         this.router.get('/', directionsControllers.getAll);
         this.router.get('/:id', directionsControllers.getOne);
         this.router.post('/', directionsControllers.store);
+        this.router.post('/dynamic', directionsControllers.dynamicQuery);
         this.router.put('/:id', directionsControllers.update);
         this.router.delete('/:id', directionsControllers.delete);
         this.router.delete('/', directionsControllers.deleteAll);

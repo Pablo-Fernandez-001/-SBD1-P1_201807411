@@ -17,6 +17,7 @@ class InventoryRoutes {
         this.router.get('/', inventoryController.getAll);
         this.router.get('/:id', inventoryController.getOne);
         this.router.post('/', inventoryController.store);
+        this.router.post('/dynamic', inventoryController.dynamicQuery);
         this.router.put('/:id', inventoryController.update);
         this.router.delete('/:id', inventoryController.delete);
         this.router.delete('/', inventoryController.deleteAll);

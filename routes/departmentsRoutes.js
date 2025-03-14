@@ -17,6 +17,7 @@ class DepartmentsRoutes {
         this.router.get('/', departmentsController.getAll);
         this.router.get('/:id', departmentsController.getOne);
         this.router.post('/', departmentsController.store);
+        this.router.post('/dynamic', departmentsController.dynamicQuery);
         this.router.put('/:id', departmentsController.update);
         this.router.delete('/:id', departmentsController.delete);
         this.router.delete('/', departmentsController.deleteAll);

@@ -17,6 +17,7 @@ class ProductsDevolutionRoutes {
         this.router.get('/', productsDevolutionController.getAll);
         this.router.get('/:id', productsDevolutionController.getOne);
         this.router.post('/', productsDevolutionController.store);
+        this.router.post('/dynamic', productsDevolutionController.dynamicQuery);
         this.router.put('/:id', productsDevolutionController.update);
         this.router.delete('/:id', productsDevolutionController.delete);
         this.router.delete('/', productsDevolutionController.deleteAll);

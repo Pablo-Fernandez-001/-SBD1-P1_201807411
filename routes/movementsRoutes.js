@@ -17,6 +17,7 @@ class MovementsRoutes {
         this.router.get('/', movementsController.getAll);
         this.router.get('/:id', movementsController.getOne);
         this.router.post('/', movementsController.store);
+        this.router.post('/dynamic', movementsController.dynamicQuery);
         this.router.put('/:id', movementsController.update);
         this.router.delete('/:id', movementsController.delete);
         this.router.delete('/', movementsController.deleteAll);

@@ -17,6 +17,7 @@ class PaymentsRoutes {
         this.router.get('/', paymentsControllers.getAll);
         this.router.get('/:id', paymentsControllers.getOne);
         this.router.post('/', paymentsControllers.store);
+        this.router.post('/dynamic', paymentsControllers.dynamicQuery);
         this.router.put('/:id', paymentsControllers.update);
         this.router.delete('/:id', paymentsControllers.delete);
         this.router.delete('/', paymentsControllers.deleteAll);

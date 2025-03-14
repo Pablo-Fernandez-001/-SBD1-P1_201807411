@@ -17,6 +17,7 @@ class CategoriesRoutes {
         this.router.get('/', categoriesControllers.getAll);
         this.router.get('/:id', categoriesControllers.getOne);
         this.router.post('/', categoriesControllers.store);
+        this.router.post('/dynamic', categoriesControllers.dynamicQuery);
         this.router.put('/:id', categoriesControllers.update);
         this.router.delete('/:id', categoriesControllers.delete);
         this.router.delete('/', categoriesControllers.deleteAll);

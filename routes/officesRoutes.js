@@ -17,6 +17,7 @@ class OfficesRoutes {
         this.router.get('/', officesController.getAll);
         this.router.get('/:id', officesController.getOne);
         this.router.post('/', officesController.store);
+        this.router.post('/dynamic', officesController.dynamicQuery);
         this.router.put('/:id', officesController.update);
         this.router.delete('/:id', officesController.delete);
         this.router.delete('/', officesController.deleteAll);

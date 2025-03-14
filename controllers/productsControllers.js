@@ -42,6 +42,23 @@ class productController {
     }
   }
 
+  static async dynamicQuery(req, res) {
+    const { query } = req.body;
+    const connection = await getConnection();
+    try {
+      console.log("Query:", query);
+      const result = await connection.execute(query);
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "No se encontraron resultados" });
+      }
+      res.json(result.rows);
+    } catch (error) {
+      res.status(500).json({ error: "Error al ejecutar la consulta", error });
+    } finally {
+      await connection.close();
+    }
+  }
+
   static async store(req, res) {
     const connection = await getConnection();
     try {

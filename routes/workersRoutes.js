@@ -17,6 +17,7 @@ class UsersRoutes {
         this.router.get('/', workersController.getAll);
         this.router.get('/:id', workersController.getOne);
         this.router.post('/', workersController.store);
+        this.router.post('/dynamic', workersController.dynamicQuery);
         this.router.put('/:id', workersController.update);
         this.router.delete('/:id', workersController.delete);
         this.router.delete('/', workersController.deleteAll);

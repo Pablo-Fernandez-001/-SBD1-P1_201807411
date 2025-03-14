@@ -17,6 +17,7 @@ class OrdersRoutes {
         this.router.get('/', ordersController.getAll);
         this.router.get('/:id', ordersController.getOne);
         this.router.post('/', ordersController.store);
+        this.router.post('/dynamic', ordersController.dynamicQuery);
         this.router.put('/:id', ordersController.update);
         this.router.delete('/:id', ordersController.delete);
         this.router.delete('/', ordersController.deleteAll);

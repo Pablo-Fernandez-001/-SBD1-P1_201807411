@@ -17,6 +17,7 @@ class ImagesRoutes {
         this.router.get('/', imagesController.getAll);
         this.router.get('/:id', imagesController.getOne);
         this.router.post('/', imagesController.store);
+        this.router.post('/dynamic', imagesController.dynamicQuery);
         this.router.put('/:id', imagesController.update);
         this.router.delete('/:id', imagesController.delete);
         this.router.delete('/', imagesController.deleteAll);
