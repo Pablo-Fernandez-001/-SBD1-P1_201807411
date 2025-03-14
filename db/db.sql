@@ -93,6 +93,7 @@ CREATE TABLE payments (
     id NUMBER PRIMARY KEY,
     client_id NUMBER REFERENCES clients(id) ON DELETE CASCADE,
     payment_method_id NUMBER REFERENCES payment_methods(id) ON DELETE SET NULL,
+    amount NUMBER(*, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -65,7 +65,8 @@ class paymentsController {
         let connection;
         try {
             connection = await getConnection();
-            let { id, client_id, payment_method, created_at, updated_at } = req.body;
+            let { id, client_id, payment_method, amount, created_at, updated_at } = req.body;
+            amount = amount ? amount : 0;
             created_at = created_at ? new Date(created_at) : new Date();
             updated_at = updated_at ? new Date(updated_at) : new Date();
 
@@ -88,9 +89,9 @@ class paymentsController {
             }
 
             await connection.execute(
-                `INSERT INTO payments (id, client_id, payment_method_id, created_at, updated_at) 
-                VALUES (:id, :client_id, :payment_method_id, :created_at, :updated_at)`,
-                [id, client_id, PaymentMethodId, created_at, updated_at],
+                `INSERT INTO payments (id, client_id, payment_method_id, amount, created_at, updated_at) 
+                VALUES (:id, :client_id, :payment_method_id, :amount, :created_at, :updated_at)`,
+                [id, client_id, PaymentMethodId, amount, created_at, updated_at],
                 { autoCommit: true }
             );
             res.json({ message: "Pago insertado correctamente" });
@@ -105,7 +106,8 @@ class paymentsController {
     // Actualizar un usuario
     static async update(req, res) {
         const { id } = req.params;
-        let { client_id, payment_method, created_at, updated_at } = req.body;
+        let { client_id, payment_method,amount, created_at, updated_at } = req.body;
+        amount = amount ? amount : 0;
         created_at = created_at ? new Date(created_at) : created_at;
         updated_at = updated_at ? new Date(updated_at) : new Date();
         
@@ -132,9 +134,9 @@ class paymentsController {
             }
 
             await connection.execute(
-                `UPDATE payments SET client_id= :client_id, payment_method_id= :payment_method_id, created_at= :created_at, updated_at= :updated_at 
+                `UPDATE payments SET client_id= :client_id, payment_method_id= :payment_method_id, amount = :amount, created_at= :created_at, updated_at= :updated_at 
                 WHERE id = :id`,
-                [client_id, PaymentMethodId, created_at, updated_at, id],
+                [client_id, PaymentMethodId, amount, created_at, updated_at, id],
                 { autoCommit: true }
             );
             res.json({ message: "Pago actualizado correctamente" });
@@ -199,9 +201,9 @@ class paymentsController {
         let connection;
         try {
             connection = await getConnection();
-            const query = `INSERT INTO payments (id, client_id, payment_method_id, created_at, updated_at) 
-            VALUES (:id, :client_id, :payment_method_id, :created_at, :updated_at)`;
-
+            const query = `INSERT INTO payments (id, client_id, payment_method_id, amount, created_at, updated_at) 
+            VALUES (:id, :client_id, :payment_method_id, :amount, :created_at, :updated_at)`;
+            const amount = 0;
             for (const rows of data) {
                 try {
                     const allRows = {
@@ -245,6 +247,7 @@ class paymentsController {
                         id: allRows.id,
                         client_id: allRows.client_id,
                         payment_method_id: PaymentMethodId,
+                        amount: amount,
                         created_at: allRows.created_at,
                         updated_at: allRows.updated_at
                     }
