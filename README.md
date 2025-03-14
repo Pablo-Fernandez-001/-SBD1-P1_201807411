@@ -99,5 +99,3 @@ Cada endpoint implementa los siguientes métodos:
 
 **Autenticación:** Solo el endpoint de usuarios (`/api/users`) maneja autenticación, con los métodos `POST /login` y `POST /auth` para gestionar sesiones y autorización.
 
-...
-(Detalles adicionales según los requerimientos)
