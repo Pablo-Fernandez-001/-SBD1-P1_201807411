@@ -203,20 +203,9 @@ class usersController {
         return res.status(404).json({ error: "Correo electrónico no encontrado" });
       }
 
-      const user = result.rows[0];  // El primer registro encontrado (usuario)
-      const storedPassword = user[2];  // La contraseña almacenada en la base de datos
-
-      console.log("User:", user);
-      console.log("Password:", password);
-      console.log("Stored Password:", storedPassword);
-
+      const user = result.rows[0];  
+      const storedPassword = user[2];  
       const match = password == storedPassword;
-
-      // Verificar si la contraseña proporcionada coincide con la contraseña almacenada (con bcrypt)
-      const isMatch = await bcrypt.compare(password, storedPassword);
-
-      console.log("isMatch:", isMatch);
-      console.log("Match:", match);
 
       if (!match) {
         return res.status(401).json({ error: "Contraseña incorrecta" });
