@@ -85,6 +85,7 @@ La API está desarrollada en Node.js con Express y se conecta a la base de datos
 - `/api/movements` - Gestión de movimientos
 - `/api/deliveredOrders` - Gestión de órdenes entregadas
 - `/api/productsDevolution` - Gestión de devoluciones de productos
+- `/api/paymentMethods` - Gestión de métodos de pago
 
 ### Métodos por Endpoint
 Cada endpoint implementa los siguientes métodos:
