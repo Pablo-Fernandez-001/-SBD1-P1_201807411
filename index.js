@@ -22,6 +22,7 @@ const imagesRoutes = require('./routes/imagesRoutes');
 const movementsRoutes = require('./routes/movementsRoutes');
 const deliveredOrdersRoutes = require('./routes/deliveredOrdersRoutes');
 const productsDevolutionRoutes = require('./routes/productsDevolutionRoutes');
+const paymentMethodsRoutes = require('./routes/paymentsMethodsRoutes');
 
 // Server
 class Server {
@@ -83,6 +84,8 @@ class Server {
         this.app.use('/api/deliveredOrders', deliveredOrdersRoutes);
         // products_devolution
         this.app.use('/api/productsDevolution', productsDevolutionRoutes);
+        // payments_methods
+        this.app.use('/api/paymentMethods', paymentMethodsRoutes);
     }
 
     start() {
