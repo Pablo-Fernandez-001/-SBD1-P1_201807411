@@ -5,7 +5,6 @@ const { getConnection } = require('../db/dbConnection');
 exports.isAuth = async (req, res, next) => {
     const token = req.headers['authorization'].split(' ')[1];
 
-    // console.log("Token:", token);
 
     if (!token) {
         return res.status(403).json({ error: 'No token provided' });
@@ -14,9 +13,7 @@ exports.isAuth = async (req, res, next) => {
     try {
         // Verificar el token
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jwt_secret_key');
-
-        console.log("Decoded:", decoded);
-
+        
         // Verificar si el usuario existe en la base de datos
         const connection = await getConnection();
         const result = await connection.execute(
