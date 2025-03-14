@@ -2,6 +2,8 @@ const { getConnection } = require('../db/dbConnection');
 const fs = require('fs');
 const csv = require('csv-parser');
 const oracledb = require('oracledb');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 class usersController {
 
@@ -188,7 +190,70 @@ class usersController {
   // Login
   static async login(req, res) {
     const { email, password } = req.body;
+    const connection = await getConnection();
+
+    try {
+      // Verificar si el usuario existe
+      const result = await connection.execute(
+        `SELECT id, email, password FROM clients WHERE email = :email`,
+        [email]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "Correo electrónico no encontrado" });
+      }
+
+      const user = result.rows[0];  // El primer registro encontrado (usuario)
+      const storedPassword = user[2];  // La contraseña almacenada en la base de datos
+
+      console.log("User:", user);
+      console.log("Password:", password);
+      console.log("Stored Password:", storedPassword);
+
+      const match = password == storedPassword;
+
+      // Verificar si la contraseña proporcionada coincide con la contraseña almacenada (con bcrypt)
+      const isMatch = await bcrypt.compare(password, storedPassword);
+
+      console.log("isMatch:", isMatch);
+      console.log("Match:", match);
+
+      if (!match) {
+        return res.status(401).json({ error: "Contraseña incorrecta" });
+      }
+
+      // Crear JWT
+      const token = jwt.sign(
+        { email: email },
+        process.env.JWT_SECRET || 'jwt_secret_key',
+        { expiresIn: '1h' } // El token expirará en una hora
+      );
+
+      res.json({
+        message: "Login exitoso",
+        token,
+      });
+    } catch (error) {
+      console.error("Error en el login:", error);
+      res.status(500).json({ error: "Error al realizar login" });
+    } finally {
+      await connection.close();
+    }
   }
+
+  static async authUser(req, res) {
+    try {
+      const user = req.user;
+      const decoded = req.decoded;
+      req.user = null;
+      req.decoded = null;
+      res.json({ message: "Usuario autenticado", user, decoded });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
 }
 
 module.exports = usersController;

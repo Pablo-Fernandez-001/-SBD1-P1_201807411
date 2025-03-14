@@ -1,5 +1,6 @@
 const express = require('express');
 const usersController = require('../controllers/usersControllers');
+const autorization = require('../validation/auth');
 const multer = require('multer');
 const fs = require('fs');
 const csv = require('csv-parser');
@@ -21,7 +22,8 @@ class UsersRoutes {
         this.router.delete('/:id', usersController.delete);
         this.router.delete('/', usersController.deleteAll);
         this.router.post('/bulkLoad', upload.single('file'), usersController.bulkLoad);
-        // this.router.get('/login', usersController.login);
+        this.router.post('/login', usersController.login);
+        this.router.post('/auth', autorization.isAuth, usersController.authUser);
     }
 }
 
